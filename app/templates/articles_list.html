@@ -1,0 +1,21 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+    <section>
+        {% for article in articles %}
+        <div class="container">
+            <img src="{{ article.IMAGE_ARTICLE }}">
+            <p>{{ article.TITRE_ARTICLE }}</p>
+            <p>{{ article.CATEGORIE_ARTICLE }}</p>
+            <p>{{ article.DATE_ARTICLE }}</p>
+            <p>{{ article.CORPS_ARTICLE }}</p>
+            <p>{{ article.NOMBRE_VUE_ARTICLE }}</p>
+            <p>{{ article.NOMBRE_LIKE_ARTICLE }}</p>
+        </div>
+        {% endfor %}
+    </section>
+
+<script type="text/javascript">
+
+</script>
+{% endblock %}

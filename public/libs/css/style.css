@@ -1,0 +1,54 @@
+*,
+*::before,
+*::after {
+    -webkit-box-sizing: border-box;
+       -moz-box-sizing: border-box;
+            box-sizing: border-box;
+}
+
+html, body {
+    height: 100%;
+    font-family: 'Lato';
+    background-color: #ecf0f1;
+}
+
+.menu {
+    background-color: #3498db;
+    border-bottom: solid 4px #2980b9;
+}
+
+.menu ul {
+    list-style: none;
+    margin: 0;
+}
+
+.menu ul li {
+    display: inline-block;
+    margin-left: -4px;
+}
+
+.menu ul li a {
+    display: block;
+    padding: 20px 10px;
+    -webkit-transition: background-color .5s ease-out;
+            transition: background-color .5s ease-out;
+}
+
+.menu ul li a:hover,
+.menu ul li a:focus{
+    background-color: #2980b9;
+}
+
+.container {
+    padding: 50px;
+    margin: 0 auto;
+    max-width: 70%;
+}
+
+
+
+
+
+
+
+

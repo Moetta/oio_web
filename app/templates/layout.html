@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{ page.title }}</title>
+    <link rel="stylesheet" type="text/css" href="{{ base_url() }}/libs/css/normalize.min.css">
+    <link rel="stylesheet" type="text/css" href="{{ base_url() }}/libs/css/style.css">
+</head>
+<body>
+    <div class="menu">
+        <ul>
+            <li><a>{{ [0][TITRE_ARTICLE] }}</a></li>
+            <li><a>Nouvel Article</a></li>
+            <li><a>Nouvel Évènement</a></li>
+            <li><a>Nouveau Message</a></li>
+        </ul>
+    </div>
+    <div class= "container">
+    {% block content %}{% endblock %}
+    </div>
+</body>
+</html>
