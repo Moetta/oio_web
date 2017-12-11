@@ -1,24 +1,24 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{{ page.title }}</title>
-    <link rel="stylesheet" type="text/css" href="{{ base_url() }}/libs/css/normalize.min.css">
-    <link rel="stylesheet" type="text/css" href="{{ base_url() }}/libs/css/style.css">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ page.title }}</title>
+  <link rel="stylesheet" type="text/css" href="{{ base_url() }}/libs/css/normalize.min.css">
+  <link rel="stylesheet" type="text/css" href="{{ base_url() }}/libs/css/style.css">
+  <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
 </head>
 <body>
-    <div class="menu">
-        <ul>
-            <li><a>{{ [0][TITRE_ARTICLE] }}</a></li>
-            <li><a>Nouvel Article</a></li>
-            <li><a>Nouvel Évènement</a></li>
-            <li><a>Nouveau Message</a></li>
-        </ul>
-    </div>
-    <div class= "container">
+  <div class="menu">
+    <ul>
+      <li><a href="{{ base_url() }}/articles/new">Nouvel Article</a></li>
+      <li><a href="{{ base_url() }}/articles">Articles</a></li>
+      <li><a>Nouveau Message</a></li>
+    </ul>
+  </div>
+  <div class= "container">
     {% block content %}{% endblock %}
-    </div>
+  </div>
 </body>
 </html>

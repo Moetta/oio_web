@@ -1,17 +1,37 @@
 {% extends 'layout.html' %}
 
 {% block content %}
-    <section>
-        <div class="container">
-            <form>
-                <input type="text" placeholder="Titre">
-                <textarea placeholder="Corps"></textarea>
-                <input type="submit" value="Valider">
-            </form>
-        </div>
-    </section>
+  <section>
+    <div class="container">
+      <form id="create">
+        <input type="text" id="new_title" placeholder="Titre">
+        <textarea id="new_body" placeholder="Corps"></textarea>
+        <input type="submit" value="Valider">
+      </form>
+    </div>
+  </section>
 
 <script type="text/javascript">
+$(document).ready(function() {
 
+	$('form').submit(function(e){
+		var new_title = $('#new_title'),
+			new_body = $('#new_body');
+		e.preventDefault();
+
+		$.ajax({
+			type: 'POST',
+			url: "/articles/new",
+			data: { title: new_title, body: new_body }
+		})
+		.done(function(res) {
+			alert('Article créée.');
+			window.location = '/articles';
+		})
+		.fail(function(res) {
+			alert( "error" );
+		})
+	});
+});
 </script>
 {% endblock %}

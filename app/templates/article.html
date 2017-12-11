@@ -3,6 +3,8 @@
 {% block content %}
     <section>
         <div class="container">
+          {% if article.ID_ARTICLE %}
+            <button id="delete">Supprimer</button>
             <img src="{{ article.IMAGE_ARTICLE }}">
             <p>{{ article.TITRE_ARTICLE }}</p>
             <p>{{ article.CATEGORIE_ARTICLE }}</p>
@@ -10,10 +12,32 @@
             <p>{{ article.CORPS_ARTICLE }}</p>
             <p>{{ article.NOMBRE_VUE_ARTICLE }}</p>
             <p>{{ article.NOMBRE_LIKE_ARTICLE }}</p>
+          {% else %}
+            <p>This article was not found...</p>
+          {% endif  %}
         </div>
     </section>
 
 <script type="text/javascript">
-
+ $(document).ready(function() {
+    var article_id = {{ article.ID_ARTICLE }};
+    $('#delete').click(function(){
+      var answer = prompt("Merci de recopier l'id "+article_id+" pour confirmer la supression de l'article.");
+        if (parseInt(answer) == article_id) {
+      
+          $.ajax({
+              type: 'DELETE',
+              url: "/articles/delete/"+article_id
+          })
+          .done(function(res) {
+            alert('Article supprimé.');
+            window.location = '/articles';
+          })
+          .fail(function(res) {
+            alert( "error" );
+          })
+        }
+      });
+  });
 </script>
 {% endblock %}

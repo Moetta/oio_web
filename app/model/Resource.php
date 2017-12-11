@@ -1,6 +1,6 @@
 <?php
 
-abstract class Ressource {
+abstract class Resource {
     private $id;
 
     static function read($id) {
