@@ -1,5 +1,4 @@
 <?php
-
 class db {
 	private $dbhost = 'localhost';
 	private $dbuser = 'root';

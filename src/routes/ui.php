@@ -14,6 +14,9 @@ $app->get('/', function ($request, $response) {
 	return $this->view->render($response, 'home.html', $vars);
 });
 
+// Login success, redirect to the dashboard.
+// return $response->withRedirect($this->router->pathFor('articles'));
+
 /* GET all articles */
 $app->get('/articles', function ($request, $response) {
 	try {
