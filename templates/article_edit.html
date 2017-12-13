@@ -1,0 +1,48 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+  <section>
+    <div class="container">
+      {% if article.ID_ARTICLE %}
+        <form id="update">
+          <input type="text" id="new_title" value="{{ article.TITRE_ARTICLE }}">
+          <textarea id="new_body">{{ article.CORPS_ARTICLE }}</textarea>
+          <input type="submit" value="Enregistrer">
+        </form>
+		<p>{{ article.CATEGORIE_ARTICLE }}</p>
+        <p>{{ article.DATE_ARTICLE }}</p>
+        <p>{{ article.NOMBRE_VUE_ARTICLE }}</p>
+        <p>{{ article.NOMBRE_LIKE_ARTICLE }}</p>
+      {% else %}
+        <p>C'est article n'existe pas, ou a été supprimé.</p>
+      {% endif  %}
+    </div>
+  </section>
+
+<script type="text/javascript">
+$(document).ready(function() {
+
+	var article_id = {{ article.ID_ARTICLE }};
+				  
+	$('form#update').submit(function(e){
+		e.preventDefault();
+
+		var new_title = $('#new_title').val(),
+			new_body = $('#new_body').val(),
+
+			url = "/articles/edit/{{ article.ID_ARTICLE }}",
+			data = { title: new_title, body: new_body };
+		
+		app.PUT(url, data)
+			.done(function(res) {
+				alert('Article modifié.');
+				window.location = '/articles/{{ article.ID_ARTICLE }}';
+			})
+			.fail(function(res) {
+				alert( "error" );
+			});
+	});
+
+});
+</script>
+{% endblock %}

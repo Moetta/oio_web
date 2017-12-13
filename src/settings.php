@@ -7,6 +7,6 @@ return [
 		'view' => [
 			'path' => __DIR__ . '/../templates',
 			'twig' => ['cache' => false]
-		],
+		]
 	 ]
 ];

@@ -2,6 +2,21 @@
 
 {% block content %}
     <section>
-        <p>home</p>
+		{% if flash_messages.login %} 
+			<p>{{ flash_messages.login[0] }}</p>
+		{% endif %}
+		{% if not session %} 
+		<form action="/login" method="POST">
+        	<input type="text" name="username" value="julfou">
+        	<input type="password" name="password" value="monaco">
+        	<input type="submit" value="Login">
+        </form>
+		{% endif %}
     </section>
+
+<script type="text/javascript">
+$(document).ready(function() {
+
+});
+</script>
 {% endblock %}

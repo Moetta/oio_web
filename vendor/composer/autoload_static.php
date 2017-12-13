@@ -20,6 +20,7 @@ class ComposerStaticInit0926db84da7bd72895c273616ab39fbf
         array (
             'Symfony\\Polyfill\\Mbstring\\' => 26,
             'Slim\\Views\\' => 11,
+            'Slim\\Flash\\' => 11,
             'Slim\\' => 5,
         ),
         'P' => 
@@ -35,6 +36,10 @@ class ComposerStaticInit0926db84da7bd72895c273616ab39fbf
         array (
             'FastRoute\\' => 10,
         ),
+        'A' => 
+        array (
+            'App\\' => 4,
+        ),
     );
 
     public static $prefixDirsPsr4 = array (
@@ -49,6 +54,10 @@ class ComposerStaticInit0926db84da7bd72895c273616ab39fbf
         'Slim\\Views\\' => 
         array (
             0 => __DIR__ . '/..' . '/slim/twig-view/src',
+        ),
+        'Slim\\Flash\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/slim/flash/src',
         ),
         'Slim\\' => 
         array (
@@ -69,6 +78,10 @@ class ComposerStaticInit0926db84da7bd72895c273616ab39fbf
         'FastRoute\\' => 
         array (
             0 => __DIR__ . '/..' . '/nikic/fast-route/src',
+        ),
+        'App\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/src',
         ),
     );
 

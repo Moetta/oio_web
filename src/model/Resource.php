@@ -1,6 +1,7 @@
 <?php
 
-abstract class Resource {
+abstract class Resource
+{
     private $id;
 
     static function read($id) {
@@ -11,15 +12,15 @@ abstract class Resource {
        
     }
     
-    static function create() {
+    static function create($data) {
        
     }
     
-    static function update() {
+    static function update($id, $data) {
        
     }
     
-    static function delete() {
+    static function delete($id) {
        
     }
 }

@@ -4,10 +4,11 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>{{ page.title }}</title>
+  <title>{{ page_title }}</title>
   <link rel="stylesheet" type="text/css" href="{{ base_url() }}/libs/css/normalize.min.css">
   <link rel="stylesheet" type="text/css" href="{{ base_url() }}/libs/css/style.css">
   <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="{{ base_url() }}/libs/js/app.js"></script>
 </head>
 <body>
   <div class="menu">
@@ -15,6 +16,9 @@
       <li><a href="{{ base_url() }}/">Home</a></li>
       <li><a href="{{ base_url() }}/articles/new">Nouvel Article</a></li>
       <li><a href="{{ base_url() }}/articles">Articles</a></li>
+      {% if session %}
+        <li><a href="{{ base_url() }}/logout">Déconnexion</a></li>
+      {% endif %}
     </ul>
   </div>
   <div class= "container">

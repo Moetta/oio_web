@@ -2,6 +2,9 @@
 
 {% block content %}
   <section>
+    {% if flash_messages.login %} 
+      <p>{{ flash_messages.login[0] }}</p>
+    {% endif %}
     <div class="container">
       <form id="create">
         <input type="text" id="new_title" placeholder="Titre">
@@ -14,23 +17,23 @@
 <script type="text/javascript">
 $(document).ready(function() {
 
-	$('form').submit(function(e){
-		var new_title = $('#new_title'),
-			new_body = $('#new_body');
+	$('form#create').submit(function(e){
 		e.preventDefault();
 
-		$.ajax({
-			type: 'POST',
-			url: "/articles/new",
-			data: { title: new_title, body: new_body }
-		})
-		.done(function(res) {
-			alert('Article créée.');
-			window.location = '/articles';
-		})
-		.fail(function(res) {
-			alert( "error" );
-		})
+		var new_title = $('#new_title').val(),
+			new_body = $('#new_body').val(),
+
+			url = "/articles/new",
+			data = { title: new_title, body: new_body };
+		
+		app.POST(url, data)
+			.done(function(res) {
+				alert('Article créée.');
+				window.location = '/articles';
+			})
+			.fail(function(res) {
+				alert( "error" );
+			});
 	});
 });
 </script>
