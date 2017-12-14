@@ -7,20 +7,27 @@
   <title>{{ page_title }}</title>
   <link rel="stylesheet" type="text/css" href="{{ base_url() }}/libs/css/normalize.min.css">
   <link rel="stylesheet" type="text/css" href="{{ base_url() }}/libs/css/style.css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto|Roboto+Mono" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
   <script src="{{ base_url() }}/libs/js/app.js"></script>
 </head>
 <body>
-  <div class="menu">
-    <ul>
-      <li><a href="{{ base_url() }}/">Home</a></li>
-      <li><a href="{{ base_url() }}/articles/new">Nouvel Article</a></li>
-      <li><a href="{{ base_url() }}/articles">Articles</a></li>
-      {% if session %}
-        <li><a href="{{ base_url() }}/logout">Déconnexion</a></li>
-      {% endif %}
-    </ul>
-  </div>
+  <nav class="blue accent-4">
+    <div class="nav-wrapper">
+      <a href="/" class="brand-logo"><i class="material-icons">cake</i></a>
+      <ul id="nav-mobile" class="right">
+        <li><a href="{{ base_url() }}/articles"><i class="material-icons">subject</i></a></li>
+<!--        <li><a href="{{ base_url() }}/events"><i class="material-icons">event</i></a></li>-->
+        {% if session %}
+        <li><a href="{{ base_url() }}/articles/new"><i class="material-icons">edit</i></a></li>
+        <li><a href="{{ base_url() }}/logout"><i class="material-icons">power_settings_new</i></a></li>
+        {% endif %}
+      </ul>
+    </div>
+  </nav>
   <div class= "container">
     {% block content %}{% endblock %}
   </div>

@@ -1,18 +1,28 @@
 {% extends 'layout.html' %}
 
 {% block content %}
-    <section>
-		{% if flash_messages.login %} 
-			<p>{{ flash_messages.login[0] }}</p>
-		{% endif %}
-		{% if not session %} 
-		<form action="/login" method="POST">
-        	<input type="text" name="username" value="julfou">
-        	<input type="password" name="password" value="monaco">
-        	<input type="submit" value="Login">
-        </form>
-		{% endif %}
-    </section>
+  <section class="row">
+    {% if not session %}
+    <div class="col s6 offset-s3">
+      <form action="/login" method="POST" class="row form-custom z-depth-1" style="margin-bottom: 0;">
+        {% if flash_messages.login %} 
+        <p class="red-text text-darken-2">{{ flash_messages.login[0] }}</p>
+        {% endif %}
+        <div class="input-field col s12">
+          <i class="material-icons prefix">account_circle</i>
+          <input type="text" id="username" name="username" value="julfou" class="validate" pattern=".{3,70}" required title="3 < characters < 70">
+          <label for="username">Identifiant</label>
+        </div>
+        <div class="input-field col s12">
+          <i class="material-icons prefix">security</i>
+          <input type="password" id="password" name="password" value="monaco" class="validate" pattern=".{3,40}" required title="3 < characters < 40">
+          <label for="password">Mot de passe</label>
+        </div>
+        <button class="btn waves-effect waves-light" type="submit" name="action">Connexion</button>
+      </form>
+    </div>
+    {% endif %}
+  </section>
 
 <script type="text/javascript">
 $(document).ready(function() {

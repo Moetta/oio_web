@@ -1,22 +1,28 @@
 {% extends 'layout.html' %}
 
 {% block content %}
-  <section>
-    <div class="container">
-      {% if article.ID_ARTICLE %}
-        <button id="delete">Supprimer</button>
-        <a href="{{ base_url() }}/articles/edit/{{ article.ID_ARTICLE }}">Éditer</a>
+  <section class="row">
+    {% if article.ID_ARTICLE %}
+      <div class="col s12 img-wrapper">
         <img src="{{ article.IMAGE_ARTICLE }}">
-        <p>{{ article.TITRE_ARTICLE }}</p>
-        <p>{{ article.CATEGORIE_ARTICLE }}</p>
-        <p>{{ article.DATE_ARTICLE }}</p>
-        <p>{{ article.CORPS_ARTICLE }}</p>
-        <p>{{ article.NOMBRE_VUE_ARTICLE }}</p>
-        <p>{{ article.NOMBRE_LIKE_ARTICLE }}</p>
-      {% else %}
-        <p>C'est article n'existe pas, ou a été supprimé.</p>
-      {% endif  %}
-    </div>
+      </div>
+      <div class="col s12">
+        <h1>{{ article.TITRE_ARTICLE }}</h1>
+        <p class="article-infos">
+          <span><i class="material-icons">visibility</i>{{ article.NOMBRE_VUE_ARTICLE }}</span>
+          <span><i class="material-icons">favorite</i>{{ article.NOMBRE_LIKE_ARTICLE }}</span>
+          —
+          <span>{{ article.CATEGORIE_ARTICLE }}</span>
+          —
+          <span>{{ article.DATE_ARTICLE }}</span>
+        </p>
+        <button id="delete" class="btn-floating btn-large waves-effect waves-light red"><i class="material-icons">delete</i></button>
+        <a href="{{ base_url() }}/articles/edit/{{ article.ID_ARTICLE }}" class="btn-floating btn-large waves-effect waves-light"><i class="material-icons">edit</i></a>
+        <p class="article-body flow-text">{{ article.CORPS_ARTICLE }}</p>
+      </div>
+    {% else %}
+      <p>C'est article n'existe pas, ou a été supprimé.</p>
+    {% endif  %}
   </section>
 
 <script type="text/javascript">

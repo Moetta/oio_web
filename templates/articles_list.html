@@ -2,15 +2,24 @@
 
 {% block content %}
   <section>
+    <h1>Tous les articles</h1>
     {% for article in articles %}
-      <div class="container">
-        <img src="{{ article.IMAGE_ARTICLE }}">
-        <p><a href="articles/{{ article.ID_ARTICLE }}">{{ article.TITRE_ARTICLE }}</a></p>
-        <p>{{ article.CATEGORIE_ARTICLE }}</p>
-        <p>{{ article.DATE_ARTICLE }}</p>
-        <p>{{ article.CORPS_ARTICLE }}</p>
-        <p>{{ article.NOMBRE_VUE_ARTICLE }}</p>
-        <p>{{ article.NOMBRE_LIKE_ARTICLE }}</p>
+      <div class="row">
+        <div class="col s12 img-wrapper">
+          <a href="articles/{{ article.ID_ARTICLE }}"><img src="{{ article.IMAGE_ARTICLE }}"></a>
+        </div>
+        <div class="col s12">
+          <h2><a href="articles/{{ article.ID_ARTICLE }}">{{ article.TITRE_ARTICLE }}</a></h2>
+          <p class="article-infos">
+            <span><i class="material-icons">visibility</i>{{ article.NOMBRE_VUE_ARTICLE }}</span>
+            <span><i class="material-icons">favorite</i>{{ article.NOMBRE_LIKE_ARTICLE }}</span>
+            —
+            <span>{{ article.CATEGORIE_ARTICLE }}</span>
+            —
+            <span>{{ article.DATE_ARTICLE }}</span>
+          </p>
+          <p class="article-body">{{ article.CORPS_ARTICLE }}</p>
+        </div>
       </div>
     {% endfor %}
   </section>

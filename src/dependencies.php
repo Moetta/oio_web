@@ -33,3 +33,10 @@ $container['Auth'] = function ($c)
 {
 	return new App\middleware\Auth($c['router']);
 };
+
+// PDO database connection
+$container['PDO'] = function ($c)
+{ 
+    $settings = $c->get('settings')['PDO'];
+    return new PDO($settings['dsn'], $settings['username'], $settings['password']); 
+}; 

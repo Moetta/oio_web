@@ -19,24 +19,22 @@ $app->post('/login', function ($req, $res, $args)
 	$username = $req->getParsedBodyParam('username');
 	$password = $req->getParsedBodyParam('password');
 	
-	$db = new db();
-	$pdo = $db->connect();
+	$pdo = $this->PDO;
 	$sql = "SELECT id FROM tab_users WHERE username = :username AND password = :password";
 	$statement = $pdo->prepare($sql);
 	$statement->execute(array(':username' => $username, ':password' => $password));
 	$user = $statement->fetch(PDO::FETCH_OBJ);
-	$db = null;
 
 	if ($user) {
-        $_SESSION['active'] = true;
+       $_SESSION['active'] = true;
         session_regenerate_id();
         // Login success, redirect to the dashboard.
 		$this->flash->addMessage('login', 'Connexion réussie.');
-        return $res->withRedirect($this->router->pathFor('new'));
-    }
-    // Login failed, redirect home.
-	$this->flash->addMessage('login', 'Connexion échouée.');
-    return $res->withRedirect($this->router->pathFor('home'));
+       return $res->withRedirect($this->router->pathFor('new'));
+    }    
+	// Login failed, redirect home.
+	$this->flash->addMessage('login', 'Identifiants incorrects.');
+	return $res->withRedirect($this->router->pathFor('home'));
 });
 
 // Logout from session
@@ -50,7 +48,8 @@ $app->get('/logout', function ($req, $res, $args)
 $app->get('/articles', function ($req, $res)
 {
 	try {
-		$articles = Article::readMany();
+		$pdo = $this->PDO;
+		$articles = Article::readMany($pdo);
 		$vars = [
 			'page_title' => 'Tous les articles',
 			'session' => $_SESSION['active'],
@@ -69,7 +68,8 @@ $app->get('/articles/{id:[0-9]+}', function ($req, $res, $args)
 	$id = $args['id'];
 
 	try {
-		$article = Article::read($id);
+		$pdo = $this->PDO;
+		$article = Article::read($pdo, $id);
 		$vars = [
 			'page_title' => $article->TITRE_ARTICLE,
 			'session' => $_SESSION['active'],
@@ -86,6 +86,7 @@ $app->get('/articles/{id:[0-9]+}', function ($req, $res, $args)
 $app->get('/articles/new', function($req, $res)
 {
  	$vars = [
+		'page_title' => 'Nouvel article',
 		'session' => $_SESSION['active'],
 		'flash_messages' => $this->flash->getMessages()
 	];
@@ -101,11 +102,12 @@ $app->post('/articles/new', function($req, $res, $args)
 	];
 
 	try {
-		Article::create($data);
+		$pdo = $this->PDO;
+		Article::create($pdo, $data);
 	} catch(PDOException $e) {
 		echo '{"error": {"text": '.$e->getMessage().'}';
 	}
-});
+})->add('Auth');
 
 /* Article Edit template */
 $app->get('/articles/edit/{id:[0-9]+}', function($req, $res, $args)
@@ -113,7 +115,9 @@ $app->get('/articles/edit/{id:[0-9]+}', function($req, $res, $args)
 	$id = $args['id'];
 
 	try {
-		$article = Article::read($id);
+		$pdo = $this->PDO;
+		$article = Article::read($pdo, $id);
+		$vars['page_title'] = 'Éditer article';
 		$vars['article'] = (array) $article;
 		$vars['session'] = $_SESSION['active'];
 		return $this->view->render($res, 'article_edit.html', $vars);
@@ -132,11 +136,12 @@ $app->put('/articles/edit/{id:[0-9]+}', function($req, $res, $args)
 	];
 
 	try {
-		$article = Article::update($id, $data);
+		$pdo = $this->PDO;
+		$article = Article::update($pdo, $id, $data);
 	} catch(PDOException $e) {
 		echo '{"error": {"text": '.$e->getMessage().'}';
 	}
-});
+})->add('Auth');
 
 /* Article DELETE */
 $app->delete('/articles/delete/{id:[0-9]+}', function($req, $res, $args)
@@ -144,8 +149,9 @@ $app->delete('/articles/delete/{id:[0-9]+}', function($req, $res, $args)
 	$id = $args['id'];
 
 	try {
-		Article::delete($id);
+		$pdo = $this->PDO;
+		Article::delete($pdo, $id);
 	} catch(PDOException $e) {
 		echo '{"error": {"text": '.$e->getMessage().'}';
 	}
-});
+})->add('Auth');

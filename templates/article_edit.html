@@ -2,21 +2,22 @@
 
 {% block content %}
   <section>
-    <div class="container">
-      {% if article.ID_ARTICLE %}
-        <form id="update">
+    <h1>Éditer Article</h1>
+    {% if article.ID_ARTICLE %}
+      <form id="update" class="row form-custom z-depth-1" style="margin-bottom: 0;">
+        <div class="input-field col s12">
           <input type="text" id="new_title" value="{{ article.TITRE_ARTICLE }}">
-          <textarea id="new_body">{{ article.CORPS_ARTICLE }}</textarea>
-          <input type="submit" value="Enregistrer">
-        </form>
-		<p>{{ article.CATEGORIE_ARTICLE }}</p>
-        <p>{{ article.DATE_ARTICLE }}</p>
-        <p>{{ article.NOMBRE_VUE_ARTICLE }}</p>
-        <p>{{ article.NOMBRE_LIKE_ARTICLE }}</p>
-      {% else %}
-        <p>C'est article n'existe pas, ou a été supprimé.</p>
-      {% endif  %}
-    </div>
+          <label for="new_title">Titre</label>
+        </div>
+        <div class="input-field col s12">
+          <textarea id="new_body" class="materialize-textarea">{{ article.CORPS_ARTICLE }}</textarea>
+          <label for="new_body">Texte</label>
+        </div>
+        <button class="btn waves-effect waves-light" type="submit" name="action">Enregistrer les modifications</button>
+      </form>
+    {% else %}
+      <p>Cet article n'existe pas, ou a été supprimé.</p>
+    {% endif  %}
   </section>
 
 <script type="text/javascript">
