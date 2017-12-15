@@ -26,12 +26,12 @@ $app->post('/login', function ($req, $res, $args)
 	$user = $statement->fetch(PDO::FETCH_OBJ);
 
 	if ($user) {
-       $_SESSION['active'] = true;
-        session_regenerate_id();
+    	$_SESSION['active'] = true;
+		session_regenerate_id();
         // Login success, redirect to the dashboard.
 		$this->flash->addMessage('login', 'Connexion réussie.');
-       return $res->withRedirect($this->router->pathFor('new'));
-    }    
+		return $res->withRedirect($this->router->pathFor('new'));
+    }
 	// Login failed, redirect home.
 	$this->flash->addMessage('login', 'Identifiants incorrects.');
 	return $res->withRedirect($this->router->pathFor('home'));

@@ -8,18 +8,18 @@ require __DIR__ . '/../vendor/autoload.php';
 // Database connexion
 //require __DIR__ . '/../src/db.php';
 
-ini_set('session.cookie_lifetime', 0);
-ini_set('session.use_cookies', 1);
-ini_set('session.use_only_cookies', 1);
+//ini_set('session.cookie_lifetime', 0);
+//ini_set('session.use_cookies', 1);
+//ini_set('session.use_only_cookies', 1);
 //ini_set('session.use_strict_mode', 1); ??
-ini_set('session.cookie_httponly', 1);
-ini_set('session.cookie_secure', 1);
-ini_set('session.gc_maxlifetime', 60 * 60 * 24);
-ini_set('session.gc_probability', 1);
-ini_set('session.gc_divisor', 1);
-ini_set('session.use_trans_sid', 0);
-ini_set('session.sid_length', 48);
-ini_set('session.sid_bits_per_character', 6);
+//ini_set('session.cookie_httponly', 1);
+//ini_set('session.cookie_secure', 1);
+//ini_set('session.gc_maxlifetime', 60 * 60 * 24);
+//ini_set('session.gc_probability', 1);
+//ini_set('session.gc_divisor', 1);
+//ini_set('session.use_trans_sid', 0);
+//ini_set('session.sid_length', 48);
+//ini_set('session.sid_bits_per_character', 6);
 
 session_start();
 

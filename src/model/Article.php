@@ -13,8 +13,8 @@ class Article extends Resource {
 
 	// SELECT 1
 	static function read($pdo, $id) {
-		$select = "SELECT *";
-		$from = "FROM tab_article";
+		$select = "SELECT * ";
+		$from = "FROM tab_article ";
 		$where = "WHERE ID_ARTICLE = :id";
 		$sql = $select . $from . $where;
 		$statement = $pdo->prepare($sql);

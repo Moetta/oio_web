@@ -4,23 +4,28 @@ abstract class Resource
 {
     private $id;
 
-    static function read($id) {
+    static function read($pdo, $id)
+	{
         
     }
     
-    static function readMany() {
+    static function readMany($pdo)
+	{
        
     }
     
-    static function create($data) {
+    static function create($pdo, $data)
+	{
        
     }
     
-    static function update($id, $data) {
+    static function update($pdo, $id, $data)
+	{
        
     }
     
-    static function delete($id) {
+    static function delete($pdo, $id)
+	{
        
     }
 }
