@@ -1,0 +1,2 @@
+-- LONGTEXT type for base 64 image encoding
+ALTER TABLE `tab_article` CHANGE `IMAGE_ARTICLE` `IMAGE_ARTICLE` LONGTEXT CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL;

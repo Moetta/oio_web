@@ -5,6 +5,10 @@
     <h1>Éditer Article</h1>
     {% if article.ID_ARTICLE %}
       <form id="update" class="row form-custom z-depth-1" style="margin-bottom: 0;">
+        <div class="col s12" style="text-align: left">
+            <input type="file" id="fileinput" accept="image/*"/>
+			<input type="hidden" id="base64" disabled/>
+          </div>
         <div class="input-field col s12">
           <input type="text" id="new_title" value="{{ article.TITRE_ARTICLE }}">
           <label for="new_title">Titre</label>
@@ -23,16 +27,31 @@
 <script type="text/javascript">
 $(document).ready(function() {
 
-	var article_id = {{ article.ID_ARTICLE }};
+	var article_id = {{ article.ID_ARTICLE }},
+		$base64 = $('#base64');
+  
+	$('#fileinput').change(function(){
+		encodeImageFileAsURL(this, $base64);
+	});
+
+	function encodeImageFileAsURL(element, output) {
+		var file = element.files[0],
+			reader = new FileReader();
+		reader.onloadend = function() {
+			output.val(reader.result);
+		}
+		reader.readAsDataURL(file);
+	}
 				  
 	$('form#update').submit(function(e){
 		e.preventDefault();
 
 		var new_title = $('#new_title').val(),
 			new_body = $('#new_body').val(),
+			new_img = $base64.val();
 
 			url = "/articles/edit/{{ article.ID_ARTICLE }}",
-			data = { title: new_title, body: new_body };
+			data = { title: new_title, body: new_body, img64: new_img };
 		
 		app.PUT(url, data)
 			.done(function(res) {

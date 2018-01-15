@@ -4,6 +4,10 @@
   <section>
     <h1>Nouvel Article</h1>
     <form id="create" class="row form-custom z-depth-1" style="margin-bottom: 0;">
+      <div class="col s12" style="text-align: left">
+        <input type="file" id="fileinput" accept="image/*"/>
+        <input type="hidden" id="base64" disabled/>
+      </div>
       <div class="input-field col s12">
         <input type="text" id="new_title" required>
         <label for="new_title">Titre</label>
@@ -19,14 +23,30 @@
 <script type="text/javascript">
 $(document).ready(function() {
 
+    var $base64 = $('#base64');
+
+	$('#fileinput').change(function(){
+		encodeImageFileAsURL(this, $base64);
+	});
+
+	function encodeImageFileAsURL(element, output) {
+		var file = element.files[0],
+			reader = new FileReader();
+		reader.onloadend = function() {
+			output.val(reader.result);
+		}
+		reader.readAsDataURL(file);
+	}
+
 	$('form#create').submit(function(e){
 		e.preventDefault();
 
 		var new_title = $('#new_title').val(),
 			new_body = $('#new_body').val(),
+			new_img = $base64.val();
 
-			url = "/articles/new",
-			data = { title: new_title, body: new_body };
+		url = "/articles/new",
+		data = { title: new_title, body: new_body, img64: new_img };
 		
 		app.POST(url, data)
 			.done(function(res) {

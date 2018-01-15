@@ -36,16 +36,16 @@ class Article extends Resource {
 
 	// INSERT new
 	static function create($pdo, $data) {
-		$sql = "INSERT INTO tab_article (TITRE_ARTICLE, CORPS_ARTICLE) VALUES (:title, :body)";
+		$sql = "INSERT INTO tab_article (TITRE_ARTICLE, CORPS_ARTICLE, IMAGE_ARTICLE) VALUES (:title, :body, :img)";
 		$statement = $pdo->prepare($sql);
-		$statement->execute(array(':title' => $data['title'], ':body' => $data['body']));
+		$statement->execute(array(':title' => $data['title'], ':body' => $data['body'], ':img' => $data['img64']));
 	}
 
 	// UPDATE 1
 	static function update($pdo, $id, $data) {
-		$sql = "UPDATE tab_article SET TITRE_ARTICLE = :title, CORPS_ARTICLE = :body WHERE ID_ARTICLE = :id";
+		$sql = "UPDATE tab_article SET TITRE_ARTICLE = :title, CORPS_ARTICLE = :body, IMAGE_ARTICLE = :img WHERE ID_ARTICLE = :id";
 		$statement = $pdo->prepare($sql);
-		$statement->execute(array(':id' => $id, ':title' => $data['title'], ':body' => $data['body']));
+		$statement->execute(array(':id' => $id, ':title' => $data['title'], ':body' => $data['body'], ':img' => $data['img64']));
 	}
 
 	// DELETE 1

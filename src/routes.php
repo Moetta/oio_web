@@ -99,6 +99,7 @@ $app->post('/articles/new', function($req, $res, $args)
 	$data = [
 		'title' => $req->getParsedBodyParam('title'),
 		'body' => $req->getParsedBodyParam('body'),
+		'img64' => $req->getParsedBodyParam('img64')
 	];
 
 	try {
@@ -133,6 +134,7 @@ $app->put('/articles/edit/{id:[0-9]+}', function($req, $res, $args)
 	$data = [
 		'title' => $req->getParsedBodyParam('title'),
 		'body' => $req->getParsedBodyParam('body'),
+		'img64' => $req->getParsedBodyParam('img64')
 	];
 
 	try {
