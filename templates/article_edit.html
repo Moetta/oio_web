@@ -31,17 +31,8 @@ $(document).ready(function() {
 		$base64 = $('#base64');
   
 	$('#fileinput').change(function(){
-		encodeImageFileAsURL(this, $base64);
+		app.encodeFileToB64(this, $base64);
 	});
-
-	function encodeImageFileAsURL(element, output) {
-		var file = element.files[0],
-			reader = new FileReader();
-		reader.onloadend = function() {
-			output.val(reader.result);
-		}
-		reader.readAsDataURL(file);
-	}
 				  
 	$('form#update').submit(function(e){
 		e.preventDefault();
@@ -51,7 +42,11 @@ $(document).ready(function() {
 			new_img = $base64.val();
 
 			url = "/articles/edit/{{ article.ID_ARTICLE }}",
-			data = { title: new_title, body: new_body, img64: new_img };
+			data = {
+				title: new_title,
+				body: new_body,
+				img64: new_img
+			};
 		
 		app.PUT(url, data)
 			.done(function(res) {

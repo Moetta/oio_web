@@ -35,14 +35,23 @@
 	var PUT = mkREST('PUT');
 	var POST = mkREST('POST');
 	var DELETE = mkREST('DELETE');
-	var LOG = function () { return 'salut'; };
+	
+	// Encodes an image file to base 64 and outputs the result in a input field.
+	var ToB64 = function (element, output) {
+		var file = element.files[0],
+			reader = new FileReader();
+		reader.onloadend = function() {
+			output.val(reader.result);
+		}
+		reader.readAsDataURL(file);
+	};
 	
 	exports.app = {
 		GET: GET,
 		PUT: PUT,
 		POST: POST,
 		DELETE: DELETE,
-		LOG: LOG
+		encodeFileToB64: ToB64
 	};
 
 })(this);

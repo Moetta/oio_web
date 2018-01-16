@@ -4,11 +4,13 @@ Website "Owl In One" — PAE ESAIP 2017-2018
 
 ## Apache configuration 
 
-**Mac:** In `extra/httpd-vhosts.conf` add:
+**Mac:** 
+
+In `extra/httpd-vhosts.conf` add:
 
 ```sh
 <VirtualHost *:[port_number]>
-                   	ServerAdmin oio
+    ServerAdmin oio
 	DocumentRoot "/Applications/MAMP/htdocs/oio_web/public"
 </VirtualHost>
 ```
