@@ -1,6 +1,7 @@
 <?php
 
 require __DIR__ . '/model/Article.php';
+require __DIR__ . '/model/ArticleCategory.php';
 
 /* Homepage */
 $app->get('/', function ($request, $response, $args)
@@ -13,7 +14,7 @@ $app->get('/', function ($request, $response, $args)
 	return $this->view->render($response, 'home.html', $vars);
 })->setName('home');
 
-// Login POST from home.html
+/* Login POST from home.html */
 $app->post('/login', function ($req, $res, $args)
 {
 	$username = $req->getParsedBodyParam('username');
@@ -37,12 +38,16 @@ $app->post('/login', function ($req, $res, $args)
 	return $res->withRedirect($this->router->pathFor('home'));
 });
 
-// Logout from session
+/* Logout from session */
 $app->get('/logout', function ($req, $res, $args)
 {
 	session_destroy();
     return $res->withRedirect($this->router->pathFor('home'));
 });
+
+/************
+ * ARTICLES *
+*************/
 
 /* GET all articles */
 $app->get('/articles', function ($req, $res)
@@ -50,6 +55,9 @@ $app->get('/articles', function ($req, $res)
 	try {
 		$pdo = $this->PDO;
 		$articles = Article::readMany($pdo);
+		foreach ($articles as $article) {
+			$article->CATEGORIE_ARTICLE = ArticleCategory::read($pdo, $article->CATEGORIE_ARTICLE)->LIBELLE_CATEGORIE;
+		}
 		$vars = [
 			'page_title' => 'Tous les articles',
 			'session' => $_SESSION['active'],
@@ -70,6 +78,7 @@ $app->get('/articles/{id:[0-9]+}', function ($req, $res, $args)
 	try {
 		$pdo = $this->PDO;
 		$article = Article::read($pdo, $id);
+		$article->CATEGORIE_ARTICLE = ArticleCategory::read($pdo, $article->CATEGORIE_ARTICLE)->LIBELLE_CATEGORIE;
 		$vars = [
 			'page_title' => $article->TITRE_ARTICLE,
 			'session' => $_SESSION['active'],
@@ -85,10 +94,16 @@ $app->get('/articles/{id:[0-9]+}', function ($req, $res, $args)
 /* New article template */
 $app->get('/articles/new', function($req, $res)
 {
+	try {
+		$pdo = $this->PDO;
+		$categories = ArticleCategory::readMany($pdo);
+	} catch(PDOException $e) {
+		echo '{"error": {"text": '.$e->getMessage().'}';
+	}
  	$vars = [
 		'page_title' => 'Nouvel article',
 		'session' => $_SESSION['active'],
-		'flash_messages' => $this->flash->getMessages()
+		'categories' => (array) $categories
 	];
 	return $this->view->render($res, 'article_new.html', $vars);
 })->setName('new')->add('Auth');
@@ -99,6 +114,7 @@ $app->post('/articles/new', function($req, $res, $args)
 	$data = [
 		'title' => $req->getParsedBodyParam('title'),
 		'body' => $req->getParsedBodyParam('body'),
+		'category' => $req->getParsedBodyParam('category'),
 		'img64' => $req->getParsedBodyParam('img64')
 	];
 
@@ -118,9 +134,14 @@ $app->get('/articles/edit/{id:[0-9]+}', function($req, $res, $args)
 	try {
 		$pdo = $this->PDO;
 		$article = Article::read($pdo, $id);
+		$category = ArticleCategory::read($pdo, $article->CATEGORIE_ARTICLE);
+		$categories = ArticleCategory::readMany($pdo);
 		$vars['page_title'] = 'Éditer article';
 		$vars['article'] = (array) $article;
+		//$vars['category'] = (array) $category;
+		$vars['categories'] = (array) $categories;
 		$vars['session'] = $_SESSION['active'];
+		//print_r($vars);
 		return $this->view->render($res, 'article_edit.html', $vars);
 	} catch(PDOException $e) {
 		echo '{"error": {"text": '.$e->getMessage().'}';
@@ -134,6 +155,7 @@ $app->put('/articles/edit/{id:[0-9]+}', function($req, $res, $args)
 	$data = [
 		'title' => $req->getParsedBodyParam('title'),
 		'body' => $req->getParsedBodyParam('body'),
+		'category' => $req->getParsedBodyParam('category'),
 		'img64' => $req->getParsedBodyParam('img64')
 	];
 
@@ -157,3 +179,7 @@ $app->delete('/articles/delete/{id:[0-9]+}', function($req, $res, $args)
 		echo '{"error": {"text": '.$e->getMessage().'}';
 	}
 })->add('Auth');
+
+/**************
+ * CATEGORIES *
+***************/

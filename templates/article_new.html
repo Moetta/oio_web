@@ -2,19 +2,41 @@
 
 {% block content %}
   <section>
-    <h1>Nouvel Article</h1>
+    <h1>
+      <a href="javascript:history.back()" class="btn-floating btn-large waves-effect waves-light blue"><i class="material-icons">arrow_back</i></a>
+      Nouvel Article
+    </h1>
     <form id="create" class="form-custom z-depth-1" style="margin-bottom: 0;">
       <p class="form-errors"></p>
-      <div style="text-align: left">
-        <input type="file" id="fileinput" accept="image/*"/>
-        <input type="hidden" id="base64" disabled/>
+      <div class="row">
+        <div class="input-field col s6">
+          <select id="new_category">
+            <option value="" disabled selected>Catégorie à choisir</option>
+            {% for category in categories %}
+              <option value="{{ category.ID_CATEGORIE }}">{{ category.LIBELLE_CATEGORIE }}</option>
+            {% endfor %}
+          </select>
+          <label>Catégorie</label>
+        </div>
+        <div class="input-field col s6">
+          <div class="file-field">
+            <div class="btn grey darken-1">
+              <span><i class="material-icons">image</i></span>
+              <input type="file" id="fileinput" accept="image/*"/>
+            </div>
+            <div class="file-path-wrapper">
+              <input class="file-path" type="text" placeholder="Nouvelle image">
+            </div>
+          </div>
+          <input type="hidden" id="base64" disabled/>
+        </div>
       </div>
       <div class="input-field">
-        <input type="text" id="new_title" required>
+        <input type="text" id="new_title" required maxlength="100">
         <label for="new_title">Titre</label>
       </div>
       <div class="input-field">
-        <textarea id="new_body" class="materialize-textarea" required></textarea>
+        <textarea id="new_body" class="materialize-textarea" required maxlength="65535"></textarea>
         <label for="new_body">Texte</label>
       </div>
       <button class="btn waves-effect waves-light" type="submit" name="action">Valider</button>
@@ -23,6 +45,7 @@
 
 <script type="text/javascript">
 $(document).ready(function() {
+	$('select').material_select();
 
     var $base64 = $('#base64'),
 		$formerrors = $('.form-errors');
@@ -37,12 +60,14 @@ $(document).ready(function() {
 
 		var new_title = $('#new_title').val(),
 			new_body = $('#new_body').val(),
+            new_category = $('#new_category').val(),
 			new_img = $base64.val();
 
 		url = "/articles/new",
 		data = {
 			title: new_title,
 			body: new_body,
+            category: new_category,
 			img64: new_img
 		};
 		

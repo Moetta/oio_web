@@ -2,20 +2,46 @@
 
 {% block content %}
   <section>
-    <h1>Éditer Article</h1>
+    <h1>
+      <a href="javascript:history.back()" class="btn-floating btn-large waves-effect waves-light blue"><i class="material-icons">arrow_back</i></a>
+      Éditer Article
+    </h1>
     {% if article.ID_ARTICLE %}
       <form id="update" class="form-custom z-depth-1" style="margin-bottom: 0;">
         <p class="form-errors"></p>
-        <div style="text-align: left">
-          <input type="file" id="fileinput" accept="image/*"/>
-		  <input type="hidden" id="base64" disabled/>
+        <div class="row">
+          <div class="input-field col s6">
+            <select id="new_category">
+              <option>mm</option>
+              {% for category in categories %}
+                {% if category.ID_CATEGORIE == article.CATEGORIE_ARTICLE %}
+                  <option value="{{ category.ID_CATEGORIE }}" selected>{{ category.LIBELLE_CATEGORIE }}</option>
+                {% else %}
+                  <option value="{{ category.ID_CATEGORIE }}">{{ category.LIBELLE_CATEGORIE }}</option>
+                {% endif %}
+              {% endfor %}
+            </select>
+            <label>Catégorie</label>
           </div>
+          <div class="input-field col s6">
+            <div class="file-field">
+              <div class="btn grey darken-1">
+                <span><i class="material-icons">image</i></span>
+                <input type="file" id="fileinput" accept="image/*"/>
+              </div>
+              <div class="file-path-wrapper">
+                <input class="file-path" type="text" placeholder="Nouvelle image" value="img.jpg">
+              </div>
+            </div>
+            <input type="hidden" id="base64" value="{{ article.IMAGE_ARTICLE }}" disabled/>
+          </div>
+        </div>
         <div class="input-field">
-          <input type="text" id="new_title" value="{{ article.TITRE_ARTICLE }}">
+          <input type="text" id="new_title" value="{{ article.TITRE_ARTICLE }}" required maxlength="100">
           <label for="new_title">Titre</label>
         </div>
         <div class="input-field">
-          <textarea id="new_body" class="materialize-textarea">{{ article.CORPS_ARTICLE }}</textarea>
+          <textarea id="new_body" class="materialize-textarea" required maxlength="65535">{{ article.CORPS_ARTICLE }}</textarea>
           <label for="new_body">Texte</label>
         </div>
         <button class="btn waves-effect waves-light" type="submit" name="action">Enregistrer les modifications</button>
@@ -27,6 +53,7 @@
 
 <script type="text/javascript">
 $(document).ready(function() {
+	$('select').material_select();
 
 	var article_id = {{ article.ID_ARTICLE }},
 		$base64 = $('#base64'),
@@ -42,14 +69,18 @@ $(document).ready(function() {
 
 		var new_title = $('#new_title').val(),
 			new_body = $('#new_body').val(),
+			new_category = $('#new_category').val(),
 			new_img = $base64.val();
 
 			url = "/articles/edit/{{ article.ID_ARTICLE }}",
 			data = {
 				title: new_title,
 				body: new_body,
+				category: new_category,
 				img64: new_img
 			};
+		
+		console.log(data);
 		
 		app.PUT(url, data)
 			.done(function(res) {

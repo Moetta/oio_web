@@ -36,16 +36,16 @@ class Article extends Resource {
 
 	// INSERT new
 	static function create($pdo, $data) {
-		$sql = "INSERT INTO tab_article (TITRE_ARTICLE, CORPS_ARTICLE, IMAGE_ARTICLE) VALUES (:title, :body, :img)";
+		$sql = "INSERT INTO tab_article (TITRE_ARTICLE, CORPS_ARTICLE, CATEGORIE_ARTICLE, IMAGE_ARTICLE) VALUES (:title, :body, :category, :img)";
 		$statement = $pdo->prepare($sql);
-		$statement->execute(array(':title' => $data['title'], ':body' => $data['body'], ':img' => $data['img64']));
+		$statement->execute(array(':title' => $data['title'], ':body' => $data['body'], ':category' => $data['category'], ':img' => $data['img64']));
 	}
 
 	// UPDATE 1
 	static function update($pdo, $id, $data) {
-		$sql = "UPDATE tab_article SET TITRE_ARTICLE = :title, CORPS_ARTICLE = :body, IMAGE_ARTICLE = :img WHERE ID_ARTICLE = :id";
+		$sql = "UPDATE tab_article SET TITRE_ARTICLE = :title, CORPS_ARTICLE = :body, CATEGORIE_ARTICLE = :category, IMAGE_ARTICLE = :img WHERE ID_ARTICLE = :id";
 		$statement = $pdo->prepare($sql);
-		$statement->execute(array(':id' => $id, ':title' => $data['title'], ':body' => $data['body'], ':img' => $data['img64']));
+		$statement->execute(array(':id' => $id, ':title' => $data['title'], ':body' => $data['body'], ':category' => $data['category'], ':img' => $data['img64']));
 	}
 
 	// DELETE 1
