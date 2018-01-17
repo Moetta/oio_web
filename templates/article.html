@@ -31,7 +31,7 @@ $(document).ready(function() {
 	var article_id = {{ article.ID_ARTICLE }};
 
 	$('#delete').click(function(){
-		var answer = prompt("Merci de recopier l'id "+article_id+" pour confirmer la suppression de l'article.");
+		var answer = prompt("Merci de recopier '"+article_id+"' pour confirmer la suppression de l'article.");
 		if (parseInt(answer) == article_id) {
 			var url = "/articles/delete/"+article_id;
 

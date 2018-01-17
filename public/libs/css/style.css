@@ -43,6 +43,10 @@ html, body {
 	height: 200px;
 }
 
+form p.form-errors {
+	margin-bottom: 10px !important;
+}
+
 .article-body {
 	text-align: justify;
 }

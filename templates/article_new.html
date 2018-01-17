@@ -3,16 +3,17 @@
 {% block content %}
   <section>
     <h1>Nouvel Article</h1>
-    <form id="create" class="row form-custom z-depth-1" style="margin-bottom: 0;">
-      <div class="col s12" style="text-align: left">
+    <form id="create" class="form-custom z-depth-1" style="margin-bottom: 0;">
+      <p class="form-errors"></p>
+      <div style="text-align: left">
         <input type="file" id="fileinput" accept="image/*"/>
         <input type="hidden" id="base64" disabled/>
       </div>
-      <div class="input-field col s12">
+      <div class="input-field">
         <input type="text" id="new_title" required>
         <label for="new_title">Titre</label>
       </div>
-      <div class="input-field col s12">
+      <div class="input-field">
         <textarea id="new_body" class="materialize-textarea" required></textarea>
         <label for="new_body">Texte</label>
       </div>
@@ -23,13 +24,15 @@
 <script type="text/javascript">
 $(document).ready(function() {
 
-    var $base64 = $('#base64');
+    var $base64 = $('#base64'),
+		$formerrors = $('.form-errors');
 
-	$('#fileinput').change(function(){
-		app.encodeFileToB64(this, $base64);
+	$('#fileinput').change(function() {
+		var file = this.files[0];
+		app.checkFileAndEncode(file, $base64, $formerrors);
 	});
 
-	$('form#create').submit(function(e){
+	$('form#create').submit(function(e) {
 		e.preventDefault();
 
 		var new_title = $('#new_title').val(),

@@ -4,16 +4,17 @@
   <section>
     <h1>Éditer Article</h1>
     {% if article.ID_ARTICLE %}
-      <form id="update" class="row form-custom z-depth-1" style="margin-bottom: 0;">
-        <div class="col s12" style="text-align: left">
-            <input type="file" id="fileinput" accept="image/*"/>
-			<input type="hidden" id="base64" disabled/>
+      <form id="update" class="form-custom z-depth-1" style="margin-bottom: 0;">
+        <p class="form-errors"></p>
+        <div style="text-align: left">
+          <input type="file" id="fileinput" accept="image/*"/>
+		  <input type="hidden" id="base64" disabled/>
           </div>
-        <div class="input-field col s12">
+        <div class="input-field">
           <input type="text" id="new_title" value="{{ article.TITRE_ARTICLE }}">
           <label for="new_title">Titre</label>
         </div>
-        <div class="input-field col s12">
+        <div class="input-field">
           <textarea id="new_body" class="materialize-textarea">{{ article.CORPS_ARTICLE }}</textarea>
           <label for="new_body">Texte</label>
         </div>
@@ -28,10 +29,12 @@
 $(document).ready(function() {
 
 	var article_id = {{ article.ID_ARTICLE }},
-		$base64 = $('#base64');
-  
-	$('#fileinput').change(function(){
-		app.encodeFileToB64(this, $base64);
+		$base64 = $('#base64'),
+		$formerrors = $('.form-errors');
+
+	$('#fileinput').change(function() {
+		var file = this.files[0];
+		app.checkFileAndEncode(file, $base64, $formerrors);
 	});
 				  
 	$('form#update').submit(function(e){
