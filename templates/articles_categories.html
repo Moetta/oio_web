@@ -1,0 +1,110 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+  <section>
+    <h1>Toutes les catégories</h1>
+    <table class="highlight">
+      <thead>
+        <tr>
+          <th>Id</th>
+          <th>Libellé</th>
+          <th style="text-align: right; width: 200px;">
+            <button class="add-category btn-floating btn-large waves-effect waves-light blue modal-trigger" href="#add-category-modal"><i class="material-icons">add</i></button>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for category in categories %}
+        <tr class="category">
+          <td class="category-id">{{ category.ID_CATEGORIE }}</td>
+          <td class="category-name">
+            <input type="text" maxlength="30" value="{{ category.LIBELLE_CATEGORIE }}" style="margin: 0;">
+          </td>
+          <td class="category-actions" style="text-align: right;">
+            <button class="edit-category btn waves-effect waves-light"><i class="material-icons">edit</i></button>
+            <button class="delete-category btn waves-effect waves-light red"><i class="material-icons">delete</i></button>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </section>
+
+  <div id="add-category-modal" class="modal">
+    <div class="modal-content">
+      <h4>Ajouter une catégorie</h4>
+      <form id="create" style="margin-bottom: 0;">
+        <div class="input-field">
+            <input type="text" id="new_name" required maxlength="100">
+          <label for="new_name">Libellé</label>
+        </div>
+      </form>
+      <div class="modal-footer">
+        <button class="modal-action btn waves-effect waves-light"><i class="material-icons">check</i></button>
+        <button class="modal-action modal-close btn-flat waves-effect waves-light">Annuler</button>
+      </div>
+    </div>
+  </div>
+
+<script type="text/javascript">
+	$('.modal').modal();
+
+	$('form#create').submit(function(e) {
+		e.preventDefault();
+
+		var new_name = $('#new_name').val(),
+
+			url = "/categories/new",
+			data = {
+				name: new_name
+			};
+		
+		app.POST(url, data)
+			.done(function(res) {
+				window.location = '/categories';
+			})
+			.fail(function(res) {
+				alert( "error" );
+			});
+	});
+
+	$('table').on('click', '.edit-category', function() {
+		var category_id = $(this).closest('.category').find('.category-id').text(),
+			category_name = $(this).closest('.category').find('.category-name input').val(),
+
+			url = "/categories/edit/"+category_id,
+			data = {
+				name: category_name
+			};
+		
+		app.PUT(url, data)
+			.done(function(res) {
+				alert('Catégorie modifiée.');
+			})
+			.fail(function(res) {
+				alert( "error" );
+			});
+	});
+	
+	$('table').on('click', '.delete-category', function() {
+		var category = $(this).closest('.category'),
+			category_id = category.find('.category-id').text();
+		console.log(category);
+		if (category_id) {
+			if (confirm("La catégorie sera définitivement supprimée ?")) {
+				var url = "/categories/delete/"+category_id;
+
+				app.DELETE(url)
+					.done(function(res) {
+						category.remove();
+					})
+					.fail(function(res) {
+						alert( "error" );
+					})
+			}
+		} else {
+			category.remove();
+		}
+	});
+</script>
+{% endblock %}

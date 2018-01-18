@@ -12,7 +12,6 @@
         <div class="row">
           <div class="input-field col s6">
             <select id="new_category">
-              <option>mm</option>
               {% for category in categories %}
                 {% if category.ID_CATEGORIE == article.CATEGORIE_ARTICLE %}
                   <option value="{{ category.ID_CATEGORIE }}" selected>{{ category.LIBELLE_CATEGORIE }}</option>
@@ -70,7 +69,7 @@ $(document).ready(function() {
 		var new_title = $('#new_title').val(),
 			new_body = $('#new_body').val(),
 			new_category = $('#new_category').val(),
-			new_img = $base64.val();
+			new_img = $base64.val(),
 
 			url = "/articles/edit/{{ article.ID_ARTICLE }}",
 			data = {
@@ -79,8 +78,6 @@ $(document).ready(function() {
 				category: new_category,
 				img64: new_img
 			};
-		
-		console.log(data);
 		
 		app.PUT(url, data)
 			.done(function(res) {

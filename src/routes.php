@@ -146,7 +146,7 @@ $app->get('/articles/edit/{id:[0-9]+}', function($req, $res, $args)
 	} catch(PDOException $e) {
 		echo '{"error": {"text": '.$e->getMessage().'}';
 	}
-});
+})->add('Auth');
 
 /* Article PUT */
 $app->put('/articles/edit/{id:[0-9]+}', function($req, $res, $args)
@@ -161,7 +161,7 @@ $app->put('/articles/edit/{id:[0-9]+}', function($req, $res, $args)
 
 	try {
 		$pdo = $this->PDO;
-		$article = Article::update($pdo, $id, $data);
+		Article::update($pdo, $id, $data);
 	} catch(PDOException $e) {
 		echo '{"error": {"text": '.$e->getMessage().'}';
 	}
@@ -183,3 +183,66 @@ $app->delete('/articles/delete/{id:[0-9]+}', function($req, $res, $args)
 /**************
  * CATEGORIES *
 ***************/
+
+/* GET all categories */
+$app->get('/categories', function ($req, $res)
+{
+	try {
+		$pdo = $this->PDO;
+		$categories = ArticleCategory::readMany($pdo);
+		$vars = [
+			'page_title' => 'Toutes les catégories',
+			'session' => $_SESSION['active'],
+			'categories' => (array) $categories
+		];
+		return $this->view->render($res, 'articles_categories.html', $vars);
+
+	} catch(PDOException $e) {
+		echo '{"error": {"text": '.$e->getMessage().'}';
+	}
+})->setName('categories')->add('Auth');
+
+/* New Category INSERT */
+$app->post('/categories/new', function($req, $res, $args)
+{
+	$data = [
+		'name' => $req->getParsedBodyParam('name')
+	];
+
+	try {
+		$pdo = $this->PDO;
+		ArticleCategory::create($pdo, $data);
+	} catch(PDOException $e) {
+		echo '{"error": {"text": '.$e->getMessage().'}';
+	}
+})->add('Auth');
+
+/* Category PUT */
+$app->put('/categories/edit/{id:[0-9]+}', function($req, $res, $args)
+{
+	$id = $args['id'];
+	$data = [
+		'name' => $req->getParsedBodyParam('name')
+	];
+
+	try {
+		$pdo = $this->PDO;
+		ArticleCategory::update($pdo, $id, $data);
+	} catch(PDOException $e) {
+		echo '{"error": {"text": '.$e->getMessage().'}';
+	}
+})->add('Auth');
+
+/* Category DELETE */
+$app->delete('/categories/delete/{id:[0-9]+}', function($req, $res, $args)
+{
+	$id = $args['id'];
+
+	try {
+		$pdo = $this->PDO;
+		ArticleCategory::delete($pdo, $id);
+	} catch(PDOException $e) {
+		echo '{"error": {"text": '.$e->getMessage().'}';
+	}
+})->add('Auth');
+

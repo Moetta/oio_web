@@ -43,7 +43,7 @@ class ArticleCategory extends Resource {
 	static function update($pdo, $id, $data) {
 		$update = "UPDATE tab_categorie_article ";
 		$set 	= "SET LIBELLE_CATEGORIE = :name ";
-		$where 	= "WHERE ID_ARTICLE = :id";
+		$where 	= "WHERE ID_CATEGORIE = :id";
 		$sql 	= $update . $set . $where;
 		$statement = $pdo->prepare($sql);
 		$statement->execute(array(':id' => $id, ':name' => $data['name']));

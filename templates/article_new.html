@@ -61,15 +61,15 @@ $(document).ready(function() {
 		var new_title = $('#new_title').val(),
 			new_body = $('#new_body').val(),
             new_category = $('#new_category').val(),
-			new_img = $base64.val();
+			new_img = $base64.val(),
 
-		url = "/articles/new",
-		data = {
-			title: new_title,
-			body: new_body,
-            category: new_category,
-			img64: new_img
-		};
+			url = "/articles/new",
+			data = {
+				title: new_title,
+				body: new_body,
+				category: new_category,
+				img64: new_img
+			};
 		
 		app.POST(url, data)
 			.done(function(res) {
