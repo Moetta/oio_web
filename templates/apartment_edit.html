@@ -4,13 +4,13 @@
   <section>
     <h1>
       <a href="javascript:history.back()" class="btn-floating btn-large waves-effect waves-light blue"><i class="material-icons">arrow_back</i></a>
-      Éditer Appartement
+      Appartement {{ apartment.ID_APPART }}
     </h1>
     <form id="update" class="form-custom z-depth-1" style="margin-bottom: 0;">
       <p class="form-errors"></p>
       <div class="row">
         <div class="col s4">
-          <p>Informations</p>
+          <p class="bold">Informations</p>
             <div class="input-field">
             <input type="text" id="new_description" required maxlength="100" value="{{ apartment.DESCRIP_APPART }}">
             <label for="new_description">Descriptif</label>
@@ -25,7 +25,7 @@
           </div>
         </div>
         <div class="col s4">
-          <p>Localisation</p>
+          <p class="bold">Localisation</p>
           <div class="input-field">
             <input type="text" id="new_address" required maxlength="100" value="{{ apartment.ADRESSE_APPART }}">
             <label for="new_address">Adresse</label>
@@ -40,7 +40,7 @@
           </div>
         </div>
         <div class="col s4">
-          <p>Propriétaire</p>
+          <p class="bold">Propriétaire</p>
           <div class="input-field">
             <input type="text" id="new_owner" required maxlength="100" value="{{ apartment.NOM_PROP }}">
             <label for="new_owner">Nom</label>

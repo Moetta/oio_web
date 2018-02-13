@@ -20,16 +20,19 @@ html, body {
 	padding: 50px;
 }
 
+.bold {
+	font-weight: bold;
+}
 
 .img-wrapper {
-  max-width: 100%;
-  max-height: 300px;
-  overflow: hidden;
-  text-align: center;
+	max-width: 100%;
+	max-height: 300px;
+	overflow: hidden;
+	text-align: center;
 }
 
 .img-wrapper img {
-  object-fit: cover;
+	object-fit: cover;
 }
 
 .form-custom {
@@ -39,7 +42,7 @@ html, body {
 }
 
 .form-custom textarea.materialize-textarea {
- 	overflow-y: scroll;
+	overflow-y: scroll;
 	height: 200px;
 }
 
@@ -52,7 +55,7 @@ form p.form-errors {
 }
 
 .article-infos {
-  font-style: italic;
+	font-style: italic;
 }
 
 .secondary-content.warning {

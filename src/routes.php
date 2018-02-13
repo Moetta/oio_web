@@ -3,6 +3,7 @@
 require __DIR__ . '/model/Article.php';
 require __DIR__ . '/model/ArticleCategory.php';
 require __DIR__ . '/model/Apartment.php';
+require __DIR__ . '/model/Event.php';
 
 /************
  * HOMEPAGE *
@@ -198,7 +199,7 @@ $app->get('/categories', function ($req, $res)
 			'session' => $_SESSION['active'],
 			'categories' => (array) $categories
 		];
-		return $this->view->render($res, 'articles_categories.html', $vars);
+		return $this->view->render($res, 'categories_list.html', $vars);
 
 	} catch(PDOException $e) {
 		echo '{"error": {"text": '.$e->getMessage().'}';
@@ -384,8 +385,75 @@ $app->delete('/apartments/delete/{id:[0-9]+}', function($req, $res, $args)
 	}
 })->add('Auth');
 
+/**********
+ * EVENTS *
+***********/
 
+/* GET all events */
+$app->get('/events', function ($req, $res)
+{
+	try {
+		$pdo = $this->PDO;
+		$events = Event::readMany($pdo);
+		$vars = [
+			'page_title' => 'Liste des évènements',
+			'session' => $_SESSION['active'],
+			'events' => (array) $events
+		];
+		return $this->view->render($res, 'events_list.html', $vars);
 
+	} catch(PDOException $e) {
+		print_r( '{"error": {"text": '.$e->getMessage().'}' );
+	}
+})->setName('events')->add('Auth');
+
+/* New event INSERT */
+$app->post('/events/new', function($req, $res, $args)
+{
+	$data = [
+		'name' 	=> $req->getParsedBodyParam('name'),
+		'description' 	=> $req->getParsedBodyParam('description'),
+		'location' 		=> $req->getParsedBodyParam('location')
+	];
+
+	try {
+		$pdo = $this->PDO;
+		Event::create($pdo, $data);
+	} catch(PDOException $e) {
+		echo '{"error": {"text": '.$e->getMessage().'}';
+	}
+})->add('Auth');
+
+/* Event PUT */
+$app->put('/events/edit/{id:[0-9]+}', function($req, $res, $args)
+{
+	$id = $args['id'];
+	$data = [
+		'name' 	=> $req->getParsedBodyParam('name'),
+		'description' 	=> $req->getParsedBodyParam('description'),
+		'location' 		=> $req->getParsedBodyParam('location')
+	];
+
+	try {
+		$pdo = $this->PDO;
+		Event::update($pdo, $id, $data);
+	} catch(PDOException $e) {
+		echo '{"error": {"text": '.$e->getMessage().'}';
+	}
+})->add('Auth');
+
+/* Event DELETE */
+$app->delete('/events/delete/{id:[0-9]+}', function($req, $res, $args)
+{
+	$id = $args['id'];
+
+	try {
+		$pdo = $this->PDO;
+		Event::delete($pdo, $id);
+	} catch(PDOException $e) {
+		echo '{"error": {"text": '.$e->getMessage().'}';
+	}
+})->add('Auth');
 
 
 

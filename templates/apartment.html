@@ -10,11 +10,14 @@
     <button id="delete" class="btn-floating btn-large waves-effect waves-light red"><i class="material-icons">delete</i></button>
     <a href="{{ base_url() }}/apartments/edit/{{ apartment.ID_APPART }}" class="btn-floating btn-large waves-effect waves-light"><i class="material-icons">edit</i></a>
     <p>
-      <b>{{ apartment.PRIX_APPART }} €</b> <br>
-      {{ apartment.ADRESSE_APPART }}, {{ apartment.VILLE_APPART }} {{ apartment.CP_APPART }}<br>
-      {{ apartment.NOM_PROP }}
+      <span class="bold">[ID]</span> {{ apartment.ID_APPART }} <br>
+      <span class="bold">[Prix]</span> {{ apartment.PRIX_APPART }} € <br>
+      <span class="bold">[Adresse]</span> {{ apartment.ADRESSE_APPART }} <br>
+      <span class="bold">[Ville]</span> {{ apartment.VILLE_APPART }} <br>
+      <span class="bold">[Code Postal]</span> {{ apartment.CP_APPART }}<br>
+      <span class="bold">[Propriétaire]</span> {{ apartment.NOM_PROP }}
     </p>
-    <p>{{ apartment.DETAIL_APPART }}</p>
+    <p><span class="bold">[Détails]</span> {{ apartment.DETAIL_APPART }}</p>
     {% endif  %}
     <div id="map" style="height:500px;"></div>
   </section>
