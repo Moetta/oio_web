@@ -17,13 +17,39 @@
 <body>
   <nav class="blue accent-4">
     <div class="nav-wrapper">
-      <a href="/" class="brand-logo"><i class="material-icons">cake</i></a>
+      <a href="/" class="brand-logo"><i class="material-icons">home</i></a>
       <ul id="nav-mobile" class="right">
-        <li><a href="{{ base_url() }}/articles" class="tooltipped" data-position="bottom" data-tooltip="Articles"><i class="material-icons">subject</i></a></li>
+        <li>
+          <a href="{{ base_url() }}/articles" class="tooltipped" data-position="bottom" data-tooltip="Articles">
+            <i class="material-icons">library_books</i>
+          </a>
+        </li>
         {% if session %}
-        <li><a href="{{ base_url() }}/articles/new" class="tooltipped" data-position="bottom" data-tooltip="Nouvel article"><i class="material-icons">edit</i></a></li>
-        <li><a href="{{ base_url() }}/categories" class="tooltipped" data-position="bottom" data-tooltip="Catégories"><i class="material-icons">collections_bookmark</i></a></li>
-        <li><a href="{{ base_url() }}/logout" class="tooltipped" data-position="bottom" data-tooltip="Déconnexion"><i class="material-icons">power_settings_new</i></a></li>
+        <li>
+          <a href="{{ base_url() }}/categories" class="tooltipped" data-position="bottom" data-tooltip="Catégories">
+            <i class="material-icons">collections_bookmark</i>
+          </a>
+        </li>
+        <li>
+          <a href="{{ base_url() }}/apartments" class="tooltipped" data-position="bottom" data-tooltip="Appartements">
+            <i class="material-icons">hotel</i>
+          </a>
+        </li>
+        <li>
+          <a href="{{ base_url() }}/calendar" class="tooltipped" data-position="bottom" data-tooltip="Calendrier">
+            <i class="material-icons">event</i>
+          </a>
+        </li>
+        <li>
+          <a href="{{ base_url() }}/bugs" class="tooltipped" data-position="bottom" data-tooltip="Bugs">
+            <i class="material-icons">warning</i>
+          </a>
+        </li>
+        <li>
+          <a href="{{ base_url() }}/logout" class="tooltipped" data-position="bottom" data-tooltip="Déconnexion">
+            <i class="material-icons">power_settings_new</i>
+          </a>
+        </li>
         {% endif %}
       </ul>
     </div>

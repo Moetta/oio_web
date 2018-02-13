@@ -2,8 +2,11 @@
 
 require __DIR__ . '/model/Article.php';
 require __DIR__ . '/model/ArticleCategory.php';
+require __DIR__ . '/model/Apartment.php';
 
-/* Homepage */
+/************
+ * HOMEPAGE *
+*************/
 $app->get('/', function ($request, $response, $args)
 {
 	$vars = [
@@ -27,12 +30,12 @@ $app->post('/login', function ($req, $res, $args)
 	$user = $statement->fetch(PDO::FETCH_OBJ);
 
 	if ($user) {
-    	$_SESSION['active'] = true;
+		$_SESSION['active'] = true;
 		session_regenerate_id();
-        // Login success, redirect to the dashboard.
+		// Login success, redirect to the dashboard.
 		$this->flash->addMessage('login', 'Connexion réussie.');
-		return $res->withRedirect($this->router->pathFor('new'));
-    }
+		return $res->withRedirect($this->router->pathFor('home'));
+	}
 	// Login failed, redirect home.
 	$this->flash->addMessage('login', 'Identifiants incorrects.');
 	return $res->withRedirect($this->router->pathFor('home'));
@@ -42,7 +45,7 @@ $app->post('/login', function ($req, $res, $args)
 $app->get('/logout', function ($req, $res, $args)
 {
 	session_destroy();
-    return $res->withRedirect($this->router->pathFor('home'));
+	return $res->withRedirect($this->router->pathFor('home'));
 });
 
 /************
@@ -106,7 +109,7 @@ $app->get('/articles/new', function($req, $res)
 		'categories' => (array) $categories
 	];
 	return $this->view->render($res, 'article_new.html', $vars);
-})->setName('new')->add('Auth');
+})->setName('newArticle')->add('Auth');
 
 /* New article INSERT */
 $app->post('/articles/new', function($req, $res, $args)
@@ -245,4 +248,157 @@ $app->delete('/categories/delete/{id:[0-9]+}', function($req, $res, $args)
 		echo '{"error": {"text": '.$e->getMessage().'}';
 	}
 })->add('Auth');
+
+/**************
+ * APARTMENTS *
+***************/
+
+/* GET all apartments */
+$app->get('/apartments', function ($req, $res)
+{
+	try {
+		$pdo = $this->PDO;
+		$apartments = Apartment::readMany($pdo);
+		$vars = [
+			'page_title' => 'Liste des appartements',
+			'session' => $_SESSION['active'],
+			'apartments' => (array) $apartments
+		];
+		return $this->view->render($res, 'apartments_list.html', $vars);
+
+	} catch(PDOException $e) {
+		error_log( '{"error": {"text": '.$e->getMessage().'}' );
+	}
+})->setName('apartments')->add('Auth');
+
+/* GET Single apartment */
+$app->get('/apartments/{id:[0-9]+}', function ($req, $res, $args)
+{
+	$id = $args['id'];
+
+	try {
+		$pdo = $this->PDO;
+		$apartment = Apartment::read($pdo, $id);
+		$vars = [
+			'page_title' => $apartment->DESCRIP_APPART,
+			'session' => $_SESSION['active'],
+			'apartment' => (array) $apartment
+		];
+		return $this->view->render($res, 'apartment.html', $vars);
+
+	} catch(PDOException $e) {
+		echo '{"error": {"text": '.$e->getMessage().'}';
+	}
+})->add('Auth');
+
+/* New Apartment template */
+$app->get('/apartments/new', function($req, $res)
+{
+ 	$vars = [
+		'page_title' => 'Nouvel appartement',
+		'session' => $_SESSION['active']
+	];
+	return $this->view->render($res, 'apartment_new.html', $vars);
+})->setName('newApartment')->add('Auth');
+
+/* New apartment INSERT */
+$app->post('/apartments/new', function($req, $res, $args)
+{
+	$data = [
+		'description' 	=> $req->getParsedBodyParam('description'),
+		'price' 		=> $req->getParsedBodyParam('price'),
+		'details' 		=> $req->getParsedBodyParam('details'),
+		'address' 		=> $req->getParsedBodyParam('address'),
+		'city' 			=> $req->getParsedBodyParam('city'),
+		'postalcode' 	=> $req->getParsedBodyParam('postalcode'),
+		'owner' 		=> $req->getParsedBodyParam('owner'),
+		'phone' 		=> $req->getParsedBodyParam('phone'),
+		'email' 		=> $req->getParsedBodyParam('email'),
+		'lat' 			=> $req->getParsedBodyParam('lat'),
+		'lng' 			=> $req->getParsedBodyParam('lng')
+	];
+
+	try {
+		$pdo = $this->PDO;
+		Apartment::create($pdo, $data);
+	} catch(PDOException $e) {
+		echo '{"error": {"text": '.$e->getMessage().'}';
+	}
+})->add('Auth');
+
+/* Apartment Edit template */
+$app->get('/apartments/edit/{id:[0-9]+}', function($req, $res, $args)
+{
+	$id = $args['id'];
+
+	try {
+		$pdo = $this->PDO;
+		$apartment = Apartment::read($pdo, $id);
+		$vars['page_title'] = 'Éditer appartement';
+		$vars['apartment'] = (array) $apartment;
+		$vars['session'] = $_SESSION['active'];
+		return $this->view->render($res, 'apartment_edit.html', $vars);
+	} catch(PDOException $e) {
+		echo '{"error": {"text": '.$e->getMessage().'}';
+	}
+})->add('Auth');
+
+/* Apartment PUT */
+$app->put('/apartments/edit/{id:[0-9]+}', function($req, $res, $args)
+{
+	$id = $args['id'];
+	$data = [
+		'description' 	=> $req->getParsedBodyParam('description'),
+		'price' 		=> $req->getParsedBodyParam('price'),
+		'details' 		=> $req->getParsedBodyParam('details'),
+		'address' 		=> $req->getParsedBodyParam('address'),
+		'city' 			=> $req->getParsedBodyParam('city'),
+		'postalcode' 	=> $req->getParsedBodyParam('postalcode'),
+		'owner' 		=> $req->getParsedBodyParam('owner'),
+		'phone' 		=> $req->getParsedBodyParam('phone'),
+		'email' 		=> $req->getParsedBodyParam('email'),
+		'status' 		=> $req->getParsedBodyParam('status'),
+		'reported' 		=> $req->getParsedBodyParam('reported'),
+		'lat' 			=> $req->getParsedBodyParam('lat'),
+		'lng' 			=> $req->getParsedBodyParam('lng')
+	];
+
+	try {
+		$pdo = $this->PDO;
+		Apartment::update($pdo, $id, $data);
+	} catch(PDOException $e) {
+		echo '{"error": {"text": '.$e->getMessage().'}';
+	}
+})->add('Auth');
+
+/* Apartment DELETE */
+$app->delete('/apartments/delete/{id:[0-9]+}', function($req, $res, $args)
+{
+	$id = $args['id'];
+
+	try {
+		$pdo = $this->PDO;
+		Apartment::delete($pdo, $id);
+	} catch(PDOException $e) {
+		echo '{"error": {"text": '.$e->getMessage().'}';
+	}
+})->add('Auth');
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

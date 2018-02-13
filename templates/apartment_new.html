@@ -1,0 +1,129 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+  <section>
+    <h1>
+      <a href="/apartments" class="btn-floating btn-large waves-effect waves-light blue"><i class="material-icons">arrow_back</i></a>
+      Nouvel Appartement
+    </h1>
+    <form id="create" class="form-custom z-depth-1" style="margin-bottom: 0;">
+      <p class="form-errors"></p>
+      <div class="row">
+        <div class="col s4">
+          <p>Informations</p>
+            <div class="input-field">
+            <input type="text" id="new_description" required maxlength="100">
+            <label for="new_description">Descriptif</label>
+          </div>
+          <div class="input-field">
+            <input type="text" id="new_price" required maxlength="4" pattern="[0-9]+">
+            <label for="new_price">Loyer mensuel (€)</label>
+          </div>
+          <div class="input-field">
+            <textarea id="new_details" class="materialize-textarea" maxlength="65535"></textarea>
+            <label for="new_details">Détails</label>
+          </div>
+        </div>
+        <div class="col s4">
+          <p>Localisation</p>
+          <div class="input-field">
+            <input type="text" id="new_address" required maxlength="100">
+            <label for="new_address">Adresse</label>
+          </div>
+          <div class="input-field">
+            <input type="text" id="new_city" required maxlength="100">
+            <label for="new_city">Ville</label>
+          </div>
+          <div class="input-field">
+            <input type="text" id="new_postalcode" maxlength="5" pattern="[0-9]{5}" title="Code de 5 chiffres">
+            <label for="new_postalcode">Code Postal</label>
+          </div>
+        </div>
+        <div class="col s4">
+          <p>Propriétaire</p>
+          <div class="input-field">
+            <input type="text" id="new_owner" maxlength="100">
+            <label for="new_owner">Nom</label>
+          </div>
+          <div class="input-field">
+            <input type="tel" id="new_phone" maxlength="100">
+            <label for="new_phone">Téléphone</label>
+          </div>
+          <div class="input-field">
+            <input type="email" id="new_email" maxlength="100" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$">
+            <label for="new_email">Email</label>
+          </div>
+        </div>
+      </div>
+      <button class="btn waves-effect waves-light" type="submit" name="action">Valider</button>
+    </form>
+    <div id="map" style="height: 500px;"></div>
+  </section>
+
+<script type="text/javascript">
+function initGeoCoding() {
+	$(document).ready(function() {
+		var geocoder = new google.maps.Geocoder();
+
+		$('form#create').submit(function(e) {
+			e.preventDefault();
+
+			var new_description = $('#new_description').val(),
+				new_price 		= $('#new_price').val(),
+				new_details 	= $('#new_details').val(),
+				new_address 	= $('#new_address').val(),
+				new_city 		= $('#new_city').val(),
+				new_postalcode 	= $('#new_postalcode').val(),
+				new_owner 		= $('#new_owner').val(),
+				new_phone 		= $('#new_phone').val(),
+				new_email 		= $('#new_email').val(),
+				new_lat,
+				new_lng;
+
+			var full_address = new_address + ', ' + new_city + ' ' + new_postalcode;
+			
+			geocode(full_address, function(data) {
+				new_lat = data.lat();
+				new_lng = data.lng();
+				
+				var url = "/apartments/new",
+				data = {
+					description: new_description,
+					price: new_price,
+					details: new_details,
+					address: new_address,
+					city: new_city,
+					postalcode: new_postalcode,
+					owner: new_owner,
+					phone: new_phone,
+					email: new_email,
+					lat: new_lat,
+					lng: new_lng
+				};
+				
+				app.POST(url, data)
+					.done(function(res) {
+						alert('Appartement créé.')
+						window.location = '/apartments';
+					})
+					.fail(function(res) {
+						alert( "error" );
+					});
+			});
+			
+			function geocode(address, callback) {
+				geocoder.geocode( { 'address': address }, function(results, status) {
+					if (status === 'OK') {
+						callback(results[0].geometry.location);
+					}
+					else {
+						alert('Geocode was not successful for the following reason: ' + status);
+					}
+				});
+			}
+		});
+	});
+}
+</script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAPmu-YLenVhTeOl_JvWNhRxUZqY_hCnZQ&callback=initGeoCoding" async defer></script>
+{% endblock %}

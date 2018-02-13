@@ -1,0 +1,57 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<section>
+  <h1>
+    Appartements
+    <a href="apartments/new" class="btn-floating btn-large waves-effect waves-light blue"><i class="material-icons">add</i></a>
+  </h1>
+  <form id="search" class="">
+    <p class="form-errors"></p>
+    <div class="row">
+      <div class="input-field col s4">
+        <select id="filter">
+          <option value="all" selected>Tous</option>
+          <option value="available">Disponibles</option>
+        </select>
+        <label>Filtrer par</label>
+      </div>
+      <div class="input-field col s8">
+        <i class="material-icons prefix">search</i>
+        <input type="text" id="keyword" placeholder="Mot clé">
+      </div>
+    </div>
+  </form>
+  <ul class="collection">
+  {% for apartment in apartments %}
+    <li class="collection-item avatar">
+    {% if apartment.DISPO_APPART == "Disponible" %}
+      <i class="material-icons circle green">hotel</i>
+    {% else %}
+      <i class="material-icons circle">hotel</i>
+    {% endif %}
+      <span class="title"><a href="apartments/{{ apartment.ID_APPART }}">{{ apartment.DESCRIP_APPART }}</a></span>
+      <p>
+        <b>{{ apartment.PRIX_APPART }} €</b> <br>
+        {{ apartment.ADRESSE_APPART }}, {{ apartment.VILLE_APPART }} {{ apartment.CP_APPART }}<br>
+        {{ apartment.NOM_PROP }}
+      </p>
+      {% if apartment.DISPO_APPART == "Signaler" %}
+        <span class="secondary-content warning"><i class="material-icons">warning</i></span>
+    {% endif %}
+    </li>
+  {% endfor %}
+  </ul>
+</section>
+
+<script type="text/javascript">
+$(document).ready(function() {
+	$('select').material_select();
+	
+	// TODO search filter
+	$('#filter').change(function() {
+
+	});
+});
+</script>
+{% endblock %}

@@ -1,0 +1,62 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+  <section class="row">
+    {% if apartment.ID_APPART %}
+    <h1>
+      <a href="/apartments" class="btn-floating btn-large waves-effect waves-light blue"><i class="material-icons">arrow_back</i></a>
+      {{ apartment.DESCRIP_APPART }}
+    </h1>
+    <button id="delete" class="btn-floating btn-large waves-effect waves-light red"><i class="material-icons">delete</i></button>
+    <a href="{{ base_url() }}/apartments/edit/{{ apartment.ID_APPART }}" class="btn-floating btn-large waves-effect waves-light"><i class="material-icons">edit</i></a>
+    <p>
+      <b>{{ apartment.PRIX_APPART }} €</b> <br>
+      {{ apartment.ADRESSE_APPART }}, {{ apartment.VILLE_APPART }} {{ apartment.CP_APPART }}<br>
+      {{ apartment.NOM_PROP }}
+    </p>
+    <p>{{ apartment.DETAIL_APPART }}</p>
+    {% endif  %}
+    <div id="map" style="height:500px;"></div>
+  </section>
+
+<script>
+	var apartment_lat = {{ apartment.LATITUDE_APPART }};
+	var apartment_lng = {{ apartment.LONGITUDE_APPART }};
+
+	function initMap() {
+		var apartment_location = {lat: apartment_lat, lng: apartment_lng};
+		var map = new google.maps.Map(document.getElementById('map'), {
+			center: apartment_location,
+			zoom: 15
+		});
+		var marker = new google.maps.Marker({
+			position: apartment_location,
+			map: map
+		});
+	}
+</script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAPmu-YLenVhTeOl_JvWNhRxUZqY_hCnZQ&callback=initMap" async defer></script>
+<script type="text/javascript">
+$(document).ready(function() {
+	$('select').material_select();
+
+	var apartment_id = {{ apartment.ID_APPART }};
+
+	$('#delete').click(function(){
+		var answer = prompt("Merci de recopier '"+apartment_id+"' pour confirmer la suppression de l'appartement.");
+		if (parseInt(answer) == apartment_id) {
+			var url = "/apartments/delete/"+apartment_id;
+
+			app.DELETE(url)
+				.done(function(res) {
+					alert('Appartement supprimé.');
+					window.location = '/apartments';
+				})
+				.fail(function(res) {
+					alert( "error" );
+				})
+		}
+	});
+});
+</script>
+{% endblock %}

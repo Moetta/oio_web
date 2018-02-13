@@ -47,7 +47,7 @@
 $(document).ready(function() {
 	$('select').material_select();
 
-    var $base64 = $('#base64'),
+	var $base64 = $('#base64'),
 		$formerrors = $('.form-errors');
 
 	$('#fileinput').change(function() {
@@ -60,7 +60,7 @@ $(document).ready(function() {
 
 		var new_title = $('#new_title').val(),
 			new_body = $('#new_body').val(),
-            new_category = $('#new_category').val(),
+			new_category = $('#new_category').val(),
 			new_img = $base64.val(),
 
 			url = "/articles/new",

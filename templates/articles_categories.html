@@ -2,7 +2,7 @@
 
 {% block content %}
   <section>
-    <h1>Toutes les catégories</h1>
+    <h1>Catégories d'articles</h1>
     <table class="highlight">
       <thead>
         <tr>
@@ -21,7 +21,7 @@
             <input type="text" maxlength="30" value="{{ category.LIBELLE_CATEGORIE }}" style="margin: 0;">
           </td>
           <td class="category-actions" style="text-align: right;">
-            <button class="edit-category btn waves-effect waves-light"><i class="material-icons">edit</i></button>
+            <button class="edit-category btn waves-effect waves-light"><i class="material-icons">check</i></button>
             <button class="delete-category btn waves-effect waves-light red"><i class="material-icons">delete</i></button>
           </td>
         </tr>
@@ -40,7 +40,7 @@
         </div>
       </form>
       <div class="modal-footer">
-        <button class="modal-action btn waves-effect waves-light"><i class="material-icons">check</i></button>
+        <button class="create-category modal-action btn waves-effect waves-light"><i class="material-icons">check</i></button>
         <button class="modal-action modal-close btn-flat waves-effect waves-light">Annuler</button>
       </div>
     </div>
@@ -49,8 +49,7 @@
 <script type="text/javascript">
 	$('.modal').modal();
 
-	$('form#create').submit(function(e) {
-		e.preventDefault();
+	$('.create-category').click(function(e) {
 
 		var new_name = $('#new_name').val(),
 

@@ -1,0 +1,146 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+  <section>
+    <h1>
+      <a href="javascript:history.back()" class="btn-floating btn-large waves-effect waves-light blue"><i class="material-icons">arrow_back</i></a>
+      Éditer Appartement
+    </h1>
+    <form id="update" class="form-custom z-depth-1" style="margin-bottom: 0;">
+      <p class="form-errors"></p>
+      <div class="row">
+        <div class="col s4">
+          <p>Informations</p>
+            <div class="input-field">
+            <input type="text" id="new_description" required maxlength="100" value="{{ apartment.DESCRIP_APPART }}">
+            <label for="new_description">Descriptif</label>
+          </div>
+          <div class="input-field">
+            <input type="text" id="new_price" required maxlength="4" pattern="[0-9]+" value="{{ apartment.PRIX_APPART }}">
+            <label for="new_price">Loyer mensuel (€)</label>
+          </div>
+          <div class="input-field">
+            <textarea id="new_details" class="materialize-textarea" maxlength="65535">{{ apartment.DETAIL_APPART }}</textarea>
+            <label for="new_details">Détails</label>
+          </div>
+        </div>
+        <div class="col s4">
+          <p>Localisation</p>
+          <div class="input-field">
+            <input type="text" id="new_address" required maxlength="100" value="{{ apartment.ADRESSE_APPART }}">
+            <label for="new_address">Adresse</label>
+          </div>
+          <div class="input-field">
+            <input type="text" id="new_city" required maxlength="100" value="{{ apartment.VILLE_APPART }}">
+            <label for="new_city">Ville</label>
+          </div>
+          <div class="input-field">
+            <input type="text" id="new_postalcode" required maxlength="5" pattern="[0-9]{5}" title="Code de 5 chiffres" value="{{ apartment.CP_APPART }}">
+            <label for="new_postalcode">Code Postal</label>
+          </div>
+        </div>
+        <div class="col s4">
+          <p>Propriétaire</p>
+          <div class="input-field">
+            <input type="text" id="new_owner" required maxlength="100" value="{{ apartment.NOM_PROP }}">
+            <label for="new_owner">Nom</label>
+          </div>
+          <div class="input-field">
+            <input type="tel" id="new_phone" maxlength="100" value="{{ apartment.TELEPHONE_PROP }}">
+            <label for="new_phone">Téléphone</label>
+          </div>
+          <div class="input-field">
+            <input type="email" id="new_email" required maxlength="100" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" value="{{ apartment.ADRESSE_MAIL }}">
+            <label for="new_email">Email</label>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col s6">
+          <div class="input-field">
+            <input type="text" id="new_status" required maxlength="100" value="{{ apartment.DISPO_APPART }}">
+            <label for="new_status">Disponibilité</label>
+          </div>
+        </div>
+        <div class="col s6">
+          <div class="input-field">
+            <input type="text" id="new_reported" required maxlength="100" value="{{ apartment.COM_SIGNALER }}">
+            <label for="new_reported">Signalé</label>
+          </div>
+        </div>
+      </div>
+      <button class="btn waves-effect waves-light" type="submit" name="action">Valider</button>
+    </form>
+  </section>
+
+<script type="text/javascript">
+function initGeoCoding() {
+	$(document).ready(function() {
+		var geocoder = new google.maps.Geocoder();
+
+		$('form#update').submit(function(e) {
+			e.preventDefault();
+
+			var new_description = $('#new_description').val(),
+				new_price 		= $('#new_price').val(),
+				new_details 	= $('#new_details').val(),
+				new_address 	= $('#new_address').val(),
+				new_city 		= $('#new_city').val(),
+				new_postalcode 	= $('#new_postalcode').val(),
+				new_owner 		= $('#new_owner').val(),
+				new_phone 		= $('#new_phone').val(),
+				new_email 		= $('#new_email').val(),
+				new_status 		= $('#new_status').val(),
+				new_reported 	= $('#new_reported').val(),
+				new_lat,
+				new_lng;
+			
+			var full_address = new_address + ', ' + new_city + ' ' + new_postalcode;
+			
+			geocode(full_address, function(data) {
+				new_lat = data.lat();
+				new_lng = data.lng();
+
+				var url = "/apartments/edit/{{ apartment.ID_APPART }}",
+					data = {
+						description: new_description,
+						price: new_price,
+						details: new_details,
+						address: new_address,
+						city: new_city,
+						postalcode: new_postalcode,
+						owner: new_owner,
+						phone: new_phone,
+						email: new_email,
+						status: new_status,
+						reported: new_reported,
+						lat: new_lat,
+						lng: new_lng
+					};
+
+				app.PUT(url, data)
+					.done(function(res) {
+						alert('Appartement modifié.');
+						window.location = '/apartments/{{ apartment.ID_APPART }}';
+					})
+					.fail(function(res) {
+						alert( "error" );
+					});
+			});
+			
+			function geocode(address, callback) {
+				geocoder.geocode( { 'address': address }, function(results, status) {
+					if (status === 'OK') {
+						callback(results[0].geometry.location);
+					}
+					else {
+						alert('Geocode was not successful for the following reason: ' + status);
+					}
+				});
+			}
+		});
+	});
+}
+</script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAPmu-YLenVhTeOl_JvWNhRxUZqY_hCnZQ&callback=initGeoCoding" async defer></script>
+{% endblock %}
