@@ -62,6 +62,18 @@ form p.form-errors {
 	color: #f44336;
 }
 
+input#new_reported,
+.collection.reported-collection a.collection-item {
+	color: #ee6e73
+}
+
+.collection.apartments-collection a.collection-item {
+	color: #000;
+}
+
+.apartments-collection .title {
+	color: #2196f3;
+}
 
 
 

@@ -1,0 +1,150 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<section>
+  <h1>Gestion des bugs</h1>
+  <div class="row">
+    <div class="col s12">
+      <ul class="tabs tabs-fixed-width">
+        <li class="tab col s3"><a class="active" href="#apartments">Appartements signalés</a></li>
+        <li class="tab col s3"><a href="#bugs">Bugs signalés</a></li>
+        <li class="tab col s3"><a href="#suggestions">Suggestions</a></li>
+        <li class="tab col s3"><a href="#users">Utilisateurs</a></li>
+      </ul>
+    </div>
+    <div id="apartments" class="col s12">
+       <div class="collection with-header reported-collection">
+        <div class="collection-header">[Id], [Signalement]</div>
+        {% for apartment in apartments %}
+          <a href="/apartments/edit/{{ apartment.ID_APPART }}" class="collection-item">{{ apartment.ID_APPART }}, {{ apartment.COM_SIGNALER }}</a>
+        {% endfor %}
+      </div>
+    </div>
+    <div id="bugs" class="col s12">
+      <ul class="collection with-header bugs-collection">
+        <li class="collection-header">[Id], [Raison du bug]</li>
+        {% for bug in bugs %}
+          <li class="collection-item bug">
+              {{ bug.ID_BUG }}, {{ bug.RAISON_BUG }}
+              <span class="delete-bug secondary-content tooltipped" target-bug="{{ bug.ID_BUG }}" data-position="bottom" data-tooltip="Marquer comme résolu" style="cursor:pointer;">
+                <i class="material-icons">check</i>
+              </span>
+          </li>
+        {% endfor %}
+      </ul>
+    </div>
+    <div id="suggestions" class="col s12">
+      <ul class="collection with-header suggestions-collection">
+        <li class="collection-header">[Id], [Suggestion]</li>
+        {% for suggestion in suggestions %}
+          <li class="collection-item suggestion">
+              {{ suggestion.ID_BUG }}, {{ suggestion.SUGGESTION_BUG }}
+            <span class="delete-suggestion secondary-content tooltipped" target-suggestion="{{ suggestion.ID_BUG }}" data-position="bottom" data-tooltip="Marquer comme traitée" style="cursor:pointer;">
+                <i class="material-icons">check</i>
+              </span>
+          </li>
+        {% endfor %}
+      </ul>
+    </div>
+    <div id="users" class="col s12">
+      <ul class="collection with-header users-collection">
+        <li class="collection-header">[Id], [Email]</li>
+        {% for user in users %}
+          <li class="collection-item user">
+              {{ user.id }}, {{ user.email }}
+              <span class="delete-user secondary-content warning tooltipped" target-user="{{ user.id }}" data-position="bottom" data-tooltip="Supprimer le compte" style="cursor:pointer;">
+                <i class="material-icons">delete_forever</i>
+              </span>
+          </li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+    
+</section>
+      
+<script type="text/javascript">
+$(document).ready(function() {
+	$('.tooltipped').tooltip({delay: 25});
+  
+	// TODO code dupliqué
+	$('.delete-bug').click(function(e) {
+		e.preventDefault();
+		var btn = $(this),
+			bug_id = btn.attr('target-bug'),
+			bug = btn.closest('.collection-item.bug');
+
+		if (bug_id) {
+			if (confirm("Le bug sera marqué comme résolu ?")) {
+				var url = "/bugs/resolve/"+bug_id,
+					data = {
+						active: 0
+					};
+
+				app.PUT(url, data)
+					.done(function(res) {
+						btn.tooltip('remove');
+						bug.remove();
+					})
+					.fail(function(res) {
+						alert(res.err.message);
+					})
+			}
+		} else {
+			user.remove();
+		}
+	});
+	
+	$('.delete-suggestion').click(function(e) {
+		e.preventDefault();
+		var btn = $(this),
+			suggestion_id = btn.attr('target-suggestion'),
+			suggestion = btn.closest('.collection-item.suggestion');
+
+		if (suggestion_id) {
+			if (confirm("La suggestion sera marquée comme traitée ?")) {
+				var url = "/bugs/resolve/"+suggestion_id,
+					data = {
+						active: 0
+					};
+
+				app.PUT(url, data)
+					.done(function(res) {
+						btn.tooltip('remove');
+						suggestion.remove();
+					})
+					.fail(function(res) {
+						alert(res.err.message);
+					})
+			}
+		} else {
+			user.remove();
+		}
+	});
+	
+	$('.delete-user').click(function(e) {
+		e.preventDefault();
+		var btn = $(this),
+			user_id = btn.attr('target-user'),
+			user = btn.closest('.collection-item.user');
+
+		if (user_id) {
+			if (confirm("L'utilisateur sera définitivement supprimé ?")) {
+				var url = "/users/delete/"+user_id;
+
+				app.DELETE(url)
+					.done(function(res) {
+						btn.tooltip('remove');
+						user.remove();
+					})
+					.fail(function(res) {
+						alert(res.err.message);
+					})
+			}
+		} else {
+			user.remove();
+		}
+	});
+});
+</script>
+{% endblock %}

@@ -4,6 +4,7 @@ require __DIR__ . '/model/Article.php';
 require __DIR__ . '/model/ArticleCategory.php';
 require __DIR__ . '/model/Apartment.php';
 require __DIR__ . '/model/Event.php';
+require __DIR__ . '/model/Bugs.php';
 
 /************
  * HOMEPAGE *
@@ -455,10 +456,54 @@ $app->delete('/events/delete/{id:[0-9]+}', function($req, $res, $args)
 	}
 })->add('Auth');
 
+/********
+ * BUGS *
+*********/
 
+/* Bugs template */
+$app->get('/bugs', function($req, $res)
+{
+	try {
+		$pdo = $this->PDO;
+		$bugs = Bugs::getBugs($pdo);
+		$suggestions = Bugs::getSuggestions($pdo);
+		$apartments = Bugs::getReportedApartments($pdo);
+		$users = Bugs::getUsers($pdo);
+		$vars = [
+			'page_title' => 'Gestion des bugs',
+			'session' => $_SESSION['active'],
+			'bugs' => (array) $bugs,
+			'suggestions' => (array) $suggestions,
+			'apartments' => (array) $apartments,
+			'users' => (array) $users
+		];
+		return $this->view->render($res, 'bugs_list.html', $vars);
 
+	} catch(PDOException $e) {
+		print_r( '{"error": {"text": '.$e->getMessage().'}' );
+	}
+})->setName('bugs')->add('Auth');
 
+/* User DELETE */
+$app->delete('/users/delete/{id:[0-9]+}', function($req, $res, $args)
+{
+	$id = $args['id'];
 
+	$pdo = $this->PDO;
+	Bugs::deleteUser($pdo, $id);
+})->add('Auth');
+
+/* Bug PUT (resolve) */
+$app->put('/bugs/resolve/{id:[0-9]+}', function($req, $res, $args)
+{
+	$id = $args['id'];
+	$data = [
+		'active' => $req->getParsedBodyParam('active')
+	];
+
+	$pdo = $this->PDO;
+	Bugs::resolveBug($pdo, $id, $data);
+})->add('Auth');
 
 
 
