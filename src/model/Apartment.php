@@ -30,21 +30,31 @@ class Apartment extends Resource {
 		return $apartments;
 	}
 	
-	// TODO search filter
-	/*static function search($pdo, $data) {
+	// SELECT search
+	static function search($pdo, $filter, $keyword) {
 		$select = "SELECT * ";
 		$from 	= "FROM tab_appart";
-		if($data['filter']) {
-			$where 	= "WHERE DISPO_APPART LIKE :filter ";
+
+		if ($filter == 'available') {
+			$where = "WHERE DISPO_APPART LIKE 'Disponible' ";
+		} else if ($filter == 'sold') {
+			$where = "WHERE DISPO_APPART LIKE 'Vendu' ";
+		} else {
+			$where 	= "WHERE TRUE";
 		}
-		//$and 	= "AND CONTAINS(DESCRIP_APPART, :keyword)";
-		$sql 	= $select . $from . $where . $and;
+
+		if ($keyword) {
+			$and = "AND DESCRIP_APPART LIKE :keyword OR ADRESSE_APPART LIKE :keyword";
+		} else {
+			$and = "";
+		}
+		$sql 	= $select ." ". $from ." ". $where ." ". $and;
 		$statement = $pdo->prepare($sql);
-		$statement->execute(array(':filter' => $data['filter'], ':keyword' => $data['keyword']));
+		$statement->execute(array(':keyword' => '%' . $keyword . '%'));
 		$apartments = $statement->fetchAll(PDO::FETCH_OBJ);
 
 		return $apartments;
-	}*/
+	}
 
 	// INSERT new
 	static function create($pdo, $data) {

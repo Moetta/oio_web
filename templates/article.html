@@ -16,13 +16,15 @@
           —
           <span>{{ article.DATE_ARTICLE }}</span>
         </p>
-        <button id="delete" class="btn-floating btn-large waves-effect waves-light red"><i class="material-icons">delete</i></button>
-        <a href="{{ base_url() }}/articles/edit/{{ article.ID_ARTICLE }}" class="btn-floating btn-large waves-effect waves-light"><i class="material-icons">edit</i></a>
+        {% if session %}
+          <button id="delete" class="btn-floating btn-large waves-effect waves-light red"><i class="material-icons">delete</i></button>
+          <a href="{{ base_url() }}/articles/edit/{{ article.ID_ARTICLE }}" class="btn-floating btn-large waves-effect waves-light"><i class="material-icons">edit</i></a>
+        {% endif %}
         <p class="article-body flow-text">{{ article.CORPS_ARTICLE }}</p>
       </div>
     {% else %}
       <p>C'est article n'existe pas, ou a été supprimé.</p>
-    {% endif  %}
+    {% endif %}
   </section>
 
 <script type="text/javascript">

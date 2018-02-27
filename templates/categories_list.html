@@ -88,7 +88,6 @@
 	$('table').on('click', '.delete-category', function() {
 		var category = $(this).closest('.category'),
 			category_id = category.find('.category-id').text();
-		console.log(category);
 		if (category_id) {
 			if (confirm("La catégorie sera définitivement supprimée ?")) {
 				var url = "/categories/delete/"+category_id;

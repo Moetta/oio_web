@@ -19,8 +19,8 @@
               <label for="new_location">Lieu</label>
             </div>
             <div class="input-field">
-              <input type="text" id="new_description" required maxlength="100" value="{{ event.DESCRIPTION_EVENEMENT }}">
-              <label for="new_description">Description</label>
+              <input type="text" id="new_link" required maxlength="255" value="{{ event.LIEN_EVENEMENT }}">
+              <label for="new_link">Lien Facebook</label>
             </div>
           </div>
           <div class="col s6">
@@ -70,8 +70,8 @@
               <label for="new_location">Lieu</label>
             </div>
             <div class="input-field">
-              <input type="text" id="new_description" required maxlength="100" value="{{ event.DESCRIPTION_EVENEMENT }}">
-              <label for="new_description">Description</label>
+              <input type="text" id="new_link" required maxlength="255" value="{{ event.LIEN_EVENEMENT }}">
+              <label for="new_link">Lien Facebook</label>
             </div>
           </div>
           <div class="col s6">
@@ -137,19 +137,16 @@ $(document).ready(function() {
 		e.preventDefault();
 		var form = $(this).closest('.modal-content'),
 			event_name = form.find('#new_name').val(),
-			event_description = form.find('#new_description').val(),
+			event_link = form.find('#new_link').val(),
 			event_location = form.find('#new_location').val();
-
-		console.log(form);
 		
 		var url = "/events/new",
 			data = {
 				name: event_name,
-				description: event_description,
+				link: event_link,
 				location: event_location
 			};
-		
-		console.log(data);
+
 		
 		app.POST(url, data)
 			.done(function(res) {
@@ -165,14 +162,14 @@ $(document).ready(function() {
 		var event = $(this).closest('.event'),
 			event_id = event.attr('id'),
 			event_name = event.find('#new_name').val(),
-			event_description = event.find('#new_description').val(),
+			event_link = event.find('#new_link').val(),
 			event_location = event.find('#new_location').val(),
 
 
 		url = "/events/edit/"+event_id,
 			data = {
 				name: event_name,
-				description: event_description,
+				link: event_link,
 				location: event_location
 			};
 		

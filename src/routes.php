@@ -505,6 +505,22 @@ $app->put('/bugs/resolve/{id:[0-9]+}', function($req, $res, $args)
 	Bugs::resolveBug($pdo, $id, $data);
 })->add('Auth');
 
+/**********
+ * SEARCH *
+***********/
+
+$app->get('/apartments/search/{filter}[/{keyword}]', function($req, $res, $args)
+{
+	$filter = $args['filter'];
+	$keyword = $args['keyword'];
+	$pdo = $this->PDO;
+	$apartments = Apartment::search($pdo, $filter, $keyword);
+	$vars = [
+		'apartments' => (array) $apartments
+	];
+	return $this->view->render($res, 'apartments_tpl.html', $vars);
+})->add('Auth');
+
 
 
 

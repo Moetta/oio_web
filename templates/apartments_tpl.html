@@ -1,0 +1,20 @@
+<div class="collection apartments-collection">
+{% for apartment in apartments %}
+  <a href="apartments/{{ apartment.ID_APPART }}" class="collection-item avatar">
+  {% if apartment.DISPO_APPART == "Disponible" %}
+    <i class="material-icons circle green">hotel</i>
+  {% else %}
+    <i class="material-icons circle">hotel</i>
+  {% endif %}
+    <span class="title">{{ apartment.DESCRIP_APPART }}</span>
+    <p>
+      <b>{{ apartment.PRIX_APPART }} €</b> <br>
+      {{ apartment.ADRESSE_APPART }}, {{ apartment.VILLE_APPART }} {{ apartment.CP_APPART }}<br>
+      {{ apartment.NOM_PROP }}
+    </p>
+    {% if apartment.DISPO_APPART == "Signaler" %}
+      <span class="secondary-content warning"><i class="material-icons">warning</i></span>
+  {% endif %}
+  </a>
+{% endfor %}
+</div>
