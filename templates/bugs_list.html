@@ -14,7 +14,7 @@
     </div>
     <div id="apartments" class="col s12">
        <div class="collection with-header reported-collection">
-        <div class="collection-header">[Id], [Signalement]</div>
+        <div class="collection-header">[Id], [Email], [Signalement]</div>
         {% for apartment in apartments %}
           <a href="/apartments/edit/{{ apartment.ID_APPART }}" class="collection-item">{{ apartment.ID_APPART }}, {{ apartment.COM_SIGNALER }}</a>
         {% endfor %}
@@ -22,26 +22,31 @@
     </div>
     <div id="bugs" class="col s12">
       <ul class="collection with-header bugs-collection">
-        <li class="collection-header">[Id], [Raison du bug]</li>
+        <li class="collection-header">[Id], [Email], [Raison du bug]</li>
         {% for bug in bugs %}
           <li class="collection-item bug">
-              {{ bug.ID_BUG }}, {{ bug.RAISON_BUG }}
-              <span class="delete-bug secondary-content tooltipped" target-bug="{{ bug.ID_BUG }}" data-position="bottom" data-tooltip="Marquer comme résolu" style="cursor:pointer;">
-                <i class="material-icons">check</i>
-              </span>
+              {{ bug.ID_BUG }}, {{ bug.EMAIL_USER }} <br>
+              <p>{{ bug.DESCRIPTION_BUG }}
+                <span class="delete-bug secondary-content tooltipped" target-bug="{{ bug.ID_BUG }}" data-position="bottom" data-tooltip="Marquer comme résolu" style="cursor:pointer;">
+                  <i class="material-icons">check</i>
+                </span>
+              </p>
           </li>
         {% endfor %}
       </ul>
     </div>
     <div id="suggestions" class="col s12">
       <ul class="collection with-header suggestions-collection">
-        <li class="collection-header">[Id], [Suggestion]</li>
+        <li class="collection-header">[Id], [Email], [Suggestion]</li>
         {% for suggestion in suggestions %}
           <li class="collection-item suggestion">
-              {{ suggestion.ID_BUG }}, {{ suggestion.SUGGESTION_BUG }}
-            <span class="delete-suggestion secondary-content tooltipped" target-suggestion="{{ suggestion.ID_BUG }}" data-position="bottom" data-tooltip="Marquer comme traitée" style="cursor:pointer;">
-                <i class="material-icons">check</i>
-              </span>
+              {{ suggestion.ID_BUG }}, {{ suggestion.EMAIL_USER }} <br>
+              <p>
+                {{ suggestion.DESCRIPTION_BUG }}
+                <span class="delete-suggestion secondary-content tooltipped" target-suggestion="{{ suggestion.ID_BUG }}" data-position="bottom" data-tooltip="Marquer comme traitée" style="cursor:pointer;">
+                  <i class="material-icons">check</i>
+                </span>
+              </p>
           </li>
         {% endfor %}
       </ul>

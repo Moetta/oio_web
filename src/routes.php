@@ -13,7 +13,7 @@ $app->get('/', function ($request, $response, $args)
 {
 	$vars = [
 		'page_title' => 'Owl In One',
-		'session' => $_SESSION['active'],
+		'session' => $_SESSION['active'] ?? false,
 		'flash_messages' => $this->flash->getMessages()
 	];
 	return $this->view->render($response, 'home.html', $vars);
@@ -73,7 +73,7 @@ $app->get('/articles', function ($req, $res)
 	} catch(PDOException $e) {
 		echo '{"error": {"text": '.$e->getMessage().'}';
 	}
-})->setName('articles');
+})->setName('articles')->add('Auth');
 
 /* GET Single article */
 $app->get('/articles/{id:[0-9]+}', function ($req, $res, $args)
@@ -260,11 +260,9 @@ $app->get('/apartments', function ($req, $res)
 {
 	try {
 		$pdo = $this->PDO;
-		$apartments = Apartment::readMany($pdo);
 		$vars = [
 			'page_title' => 'Liste des appartements',
-			'session' => $_SESSION['active'],
-			'apartments' => (array) $apartments
+			'session' => $_SESSION['active']
 		];
 		return $this->view->render($res, 'apartments_list.html', $vars);
 
@@ -361,6 +359,7 @@ $app->put('/apartments/edit/{id:[0-9]+}', function($req, $res, $args)
 		'email' 		=> $req->getParsedBodyParam('email'),
 		'status' 		=> $req->getParsedBodyParam('status'),
 		'reported' 		=> $req->getParsedBodyParam('reported'),
+		'validation' 	=> $req->getParsedBodyParam('validation'),
 		'lat' 			=> $req->getParsedBodyParam('lat'),
 		'lng' 			=> $req->getParsedBodyParam('lng')
 	];
@@ -396,6 +395,9 @@ $app->get('/events', function ($req, $res)
 	try {
 		$pdo = $this->PDO;
 		$events = Event::readMany($pdo);
+		foreach($events as $event) {
+			$event->DEBUT_EVENEMENT = str_replace(' ', 'T', $event->DEBUT_EVENEMENT);
+		}
 		$vars = [
 			'page_title' => 'Liste des évènements',
 			'session' => $_SESSION['active'],
@@ -412,17 +414,15 @@ $app->get('/events', function ($req, $res)
 $app->post('/events/new', function($req, $res, $args)
 {
 	$data = [
-		'name' 	=> $req->getParsedBodyParam('name'),
-		'description' 	=> $req->getParsedBodyParam('description'),
+		'name' 			=> $req->getParsedBodyParam('name'),
+		'start' 		=> $req->getParsedBodyParam('start'),
+		'link' 			=> $req->getParsedBodyParam('link'),
 		'location' 		=> $req->getParsedBodyParam('location')
 	];
 
-	try {
-		$pdo = $this->PDO;
-		Event::create($pdo, $data);
-	} catch(PDOException $e) {
-		echo '{"error": {"text": '.$e->getMessage().'}';
-	}
+	$pdo = $this->PDO;
+	Event::create($pdo, $data);
+
 })->add('Auth');
 
 /* Event PUT */
@@ -430,8 +430,9 @@ $app->put('/events/edit/{id:[0-9]+}', function($req, $res, $args)
 {
 	$id = $args['id'];
 	$data = [
-		'name' 	=> $req->getParsedBodyParam('name'),
-		'description' 	=> $req->getParsedBodyParam('description'),
+		'name' 			=> $req->getParsedBodyParam('name'),
+		'start' 		=> $req->getParsedBodyParam('start'),
+		'link' 			=> $req->getParsedBodyParam('link'), 
 		'location' 		=> $req->getParsedBodyParam('location')
 	];
 
@@ -512,7 +513,7 @@ $app->put('/bugs/resolve/{id:[0-9]+}', function($req, $res, $args)
 $app->get('/apartments/search/{filter}[/{keyword}]', function($req, $res, $args)
 {
 	$filter = $args['filter'];
-	$keyword = $args['keyword'];
+	$keyword = $args['keyword'] ?? NULL;
 	$pdo = $this->PDO;
 	$apartments = Apartment::search($pdo, $filter, $keyword);
 	$vars = [

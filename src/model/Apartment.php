@@ -34,19 +34,21 @@ class Apartment extends Resource {
 	static function search($pdo, $filter, $keyword) {
 		$select = "SELECT * ";
 		$from 	= "FROM tab_appart";
+		$where	= "WHERE true";
+		$and	= "";
 
 		if ($filter == 'available') {
-			$where = "WHERE DISPO_APPART LIKE 'Disponible' ";
+			$and.= "AND DISPO_APPART LIKE 'Disponible' ";
 		} else if ($filter == 'sold') {
-			$where = "WHERE DISPO_APPART LIKE 'Vendu' ";
+			$and.= "AND DISPO_APPART LIKE 'Vendu' ";
 		} else {
-			$where 	= "WHERE TRUE";
+			$and .= "AND TRUE";
 		}
 
 		if ($keyword) {
-			$and = "AND DESCRIP_APPART LIKE :keyword OR ADRESSE_APPART LIKE :keyword";
+			$and.= "AND DESCRIP_APPART LIKE :keyword OR ADRESSE_APPART LIKE :keyword";
 		} else {
-			$and = "";
+			$and.= "";
 		}
 		$sql 	= $select ." ". $from ." ". $where ." ". $and;
 		$statement = $pdo->prepare($sql);
@@ -92,6 +94,7 @@ class Apartment extends Resource {
 		$set   .= ", ADRESSE_MAIL = :email";
 		$set   .= ", DISPO_APPART = :status";
 		$set   .= ", COM_SIGNALER = :reported";
+		$set   .= ", VALIDATION = :validation";
 		$set   .= ", LATITUDE_APPART = :lat";
 		$set   .= ", LONGITUDE_APPART = :lng";
 		$where 	= " WHERE ID_APPART = :id";
@@ -109,6 +112,7 @@ class Apartment extends Resource {
 								  ':email' => $data['email'],
 								  ':status' => $data['status'],
 								  ':reported' => $data['reported'],
+								  ':validation' => $data['validation'],
 								  ':lat' => $data['lat'],
 								  ':lng' => $data['lng']
 								 ));

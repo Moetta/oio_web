@@ -25,7 +25,7 @@ $container['view'] = function ($c)
 // Flash messages between views
 $container['flash'] = function ()
 {
-    return new \Slim\Flash\Messages();
+	return new \Slim\Flash\Messages();
 };
 
 // Auth middleware
@@ -36,7 +36,7 @@ $container['Auth'] = function ($c)
 
 // PDO database connection
 $container['PDO'] = function ($c)
-{ 
-    $settings = $c->get('settings')['PDO'];
-    return new PDO($settings['dsn'], $settings['username'], $settings['password']); 
-}; 
+{
+	$settings = $c->get('settings')['PDO'];
+	return new PDO($settings['dsn'], $settings['username'], $settings['password']); 
+};

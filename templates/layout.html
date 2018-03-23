@@ -17,14 +17,16 @@
 <body>
   <nav class="blue accent-4">
     <div class="nav-wrapper">
-      <a href="/" class="brand-logo"><i class="material-icons">home</i></a>
+      <a href="/" class="brand-logo tooltipped" data-position="bottom" data-tooltip="Accueil">
+        <i class="material-icons">home</i>
+      </a>
+      {% if session %}
       <ul id="nav-mobile" class="right">
         <li>
           <a href="{{ base_url() }}/articles" class="tooltipped" data-position="bottom" data-tooltip="Articles">
             <i class="material-icons">library_books</i>
           </a>
         </li>
-        {% if session %}
         <li>
           <a href="{{ base_url() }}/categories" class="tooltipped" data-position="bottom" data-tooltip="Catégories">
             <i class="material-icons">collections_bookmark</i>
@@ -50,8 +52,8 @@
             <i class="material-icons">power_settings_new</i>
           </a>
         </li>
-        {% endif %}
       </ul>
+      {% endif %}
     </div>
   </nav>
   <div class= "container">

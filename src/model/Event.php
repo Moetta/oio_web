@@ -29,12 +29,13 @@ class Event {
 	
 	// INSERT new event
 	static function create($pdo, $data) {
-		$insert = "INSERT INTO tab_evenement (NOM_EVENEMENT, DESCRIPTION_EVENEMENT, LIEU_EVENEMENT)";
-		$values = "VALUES (:name, :description, :location)";
+		$insert = "INSERT INTO tab_evenement (NOM_EVENEMENT, DEBUT_EVENEMENT, LIEN_EVENEMENT, LIEU_EVENEMENT)";
+		$values = "VALUES (:name, :start, :link, :location)";
 		$sql 	= $insert ." ". $values;
 		$statement = $pdo->prepare($sql);
 		$statement->execute(array(':name' => $data['name'],
-								  ':description' => $data['description'],
+								  ':start' => $data['start'],
+								  ':link' => $data['link'],
 								  ':location' => $data['location']
 								 ));
 	}
@@ -43,14 +44,16 @@ class Event {
 	static function update($pdo, $id, $data) {
 		$update = "UPDATE tab_evenement";
 		$set 	= "SET NOM_EVENEMENT = :name ";
-		$set   .= ", DESCRIPTION_EVENEMENT = :description";
+		$set   .= ", DEBUT_EVENEMENT = :start";
+		$set   .= ", LIEN_EVENEMENT = :link";
 		$set   .= ", LIEU_EVENEMENT = :location";
 		$where 	= "WHERE ID_EVENEMENT = :id";
 		$sql 	= $update ." ". $set ." ". $where;
 		$statement = $pdo->prepare($sql);
 		$statement->execute(array(':id' => $id,
 								  ':name' => $data['name'],
-								  ':description' => $data['description'],
+								  ':start' => $data['start'],
+								  ':link' => $data['link'],
 								  ':location' => $data['location']
 								 ));
 	}

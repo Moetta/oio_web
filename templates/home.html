@@ -21,6 +21,67 @@
         <button class="btn waves-effect waves-light" type="submit" name="action">Connexion</button>
       </form>
     </div>
+    {% else %}
+    <h1>Manuel d'utilisation</h1>
+    <div>
+      <p>
+        Ce backoffice de gestion des données de l'application <b>Owl In One</b> propose les gestion des :
+      </p>
+        <ul>
+          <li>
+            <a href="/articles">
+              <i class="material-icons">library_books</i> Articles
+            </a>
+            et leurs
+            <a href="/categories">
+              <i class="material-icons">collections_bookmark</i>Catégories
+            </a>
+          </li>
+          <li><a href="/apartments"><i class="material-icons">hotel</i> Appartements</a></li>
+          <li><a href="/events"><i class="material-icons">event</i> Événements</a></li>
+          <li><a href="/bugs"><i class="material-icons">warning</i> Bugs et Suggestions</a></li>
+        </ul>
+      <h3>Général</h3>
+      <p>De façon générale, l'application web repose sur les principes <b>REST</b> avec 4 opérations sur la base de données (consultation, insertion, modification, suppression) et un fonctionnement par <b>URLs</b>.</p>
+      <p>Il est ainsi possible pour chaque ressource (avec une requête GET) de : </p>
+      <ul>
+        <li>consulter la liste entière <code>/nom_de_la_ressource</code></li>
+        <li>consulter une ressource particulière <code>/nom_de_la_ressource/id</code></li>
+        <li>éditer une ressource particulière <code>/nom_de_la_ressource/edit/id</code></li>
+      </ul>
+      <p><b>Notes :</b> Le site se charge des autres requêtes nécessitant un autre type (PUT, DELETE).</p>
+      <h3>Articles & Catégories</h3>
+      <p>
+        Depuis la page des articles <code>/articles</code> :<br>
+        il est possible de consulter tous les articles publiés, d'en rédiger un nouveau ou bien d'en afficher un existant.<br>
+        Depuis la page d'un article <code>/articles/id</code>, il est possible de modifier ou supprimer l'article en question.
+      </p>
+      <p>
+        Depuis la page des catégories <code>/categories</code> :<br>
+        il est directement possible de consulter tous les catégories publiées, d'en ajouter une nouvelle ou bien d'en modifier une existante.
+      </p>
+      <p><b>Notes :</b> Un article doit être lié à strictement une catégorie.</p>
+      <h3>Appartements</h3>
+      <p>
+        Depuis la page des appartements <code>/apartments</code> :<br>
+        il est possible de consulter tous les appartements publiés, d'en ajouter un nouveau ou bien d'en modifier un existant.
+      </p>
+      <p><b>Notes :</b> Les appartements doivent être validés par un administrateur avant d'être publiés définitivement.</p>
+      <h3>Évènements</h3>
+      <p>
+        Depuis la page des évènements <code>/events</code> :<br>
+        il est directement possible de consulter tous les évènements publiés, d'en ajouter un nouveau ou bien d'en modifier un existant.
+      </p>
+       <p><b>Notes :</b> Le champ date de début de l'événement est fonctionnel mais est plus facile d'utilisation sous Chrome/Opera et Edge.</p>
+      <h3>Bugs & Suggestions</h3>
+      <p>
+        Depuis la page des bugs <code>/bugs</code> :<br>
+        il est possible de consulter la liste des appartements signalés, la liste des bugs et des suggestions (que l'on peut marquer comme résolus), et la liste des utilisateurs (que l'on peut supprimer).
+      </p>
+       <p><b>Notes :</b> Les bugs et suggestions des utilisateurs sont envoyés via le feedback depuis l'application.</p>
+      <h3>Documentation technique</h3>
+      <p><a href="/documentation">Documentation</a></p>
+    </div>
     {% endif %}
   </section>
 

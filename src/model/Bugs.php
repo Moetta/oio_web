@@ -5,9 +5,9 @@ class Bugs {
 	// SELECT all bugs where type bug
 	static function getBugs($pdo) {
 		$select = "SELECT *";
-		$from = "FROM tab_bugs";
-		$where = "WHERE STATUT_BUG = 1";
-		$and = "AND RAISON_BUG IS NOT NULL";
+		$from = "FROM tab_bug";
+		$where = "WHERE ETAT_BUG = 1";
+		$and = "AND CATEGORIE_BUG LIKE 'Bug'";
 		$sql = $select ." ". $from ." ". $where ." ". $and;
 		$statement = $pdo->prepare($sql);
 		$statement->execute();
@@ -19,9 +19,9 @@ class Bugs {
 	// SELECT all bugs where type suggestion
 	static function getSuggestions($pdo) {
 		$select = "SELECT *";
-		$from = "FROM tab_bugs";
-		$where = "WHERE STATUT_BUG = 1";
-		$and = "AND SUGGESTION_BUG IS NOT NULL";
+		$from = "FROM tab_bug";
+		$where = "WHERE ETAT_BUG = 1";
+		$and = "AND CATEGORIE_BUG LIKE 'Suggestion'";
 		$sql = $select ." ". $from ." ". $where ." ". $and;
 		$statement = $pdo->prepare($sql);
 		$statement->execute();
@@ -32,8 +32,8 @@ class Bugs {
 	
 	// UPDATE bug to mark as resolved
 	static function resolveBug($pdo, $id, $data) {
-		$update = "UPDATE tab_bugs";
-		$set 	= "SET STATUT_BUG = :active ";
+		$update = "UPDATE tab_bug";
+		$set 	= "SET ETAT_BUG = :active ";
 		$where 	= "WHERE ID_BUG = :id";
 		$sql 	= $update ." ". $set ." ". $where;
 		$statement = $pdo->prepare($sql);

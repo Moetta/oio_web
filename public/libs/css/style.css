@@ -12,8 +12,12 @@ html, body {
 	background-color: #ecf0f1;
 }
 
+code {
+	color: #e67e22;
+}
+
 .nav-wrapper {
-  padding: 0 20px;
+	padding: 0 20px;
 }
 
 .container {
@@ -32,7 +36,7 @@ html, body {
 }
 
 .img-wrapper img {
-	object-fit: cover;
+	object-fit: contain;
 }
 
 .form-custom {

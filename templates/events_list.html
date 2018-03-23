@@ -6,7 +6,7 @@
     Évènements
     <button class="add-category btn-floating btn-large waves-effect waves-light blue modal-trigger" href="#add-event-modal"><i class="material-icons">add</i></button>
   </h1>
-   
+   <p>La date fonctionne mieux sur Chrome/OperaEdge et sur Mobile.</p>
   <ul class="collapsible" data-collapsible="accordion">
   {% for event in events %}
     <li id="{{ event.ID_EVENEMENT }}" class="event">
@@ -15,41 +15,25 @@
         <form class="row" style="margin-bottom: 0;">
           <div class="col s6">
             <div class="input-field">
+              <input type="text" id="new_name" required maxlength="100" value="{{ event.NOM_EVENEMENT }}">
+              <label for="new_name">Nom</label>
+            </div>
+            <div class="input-field">
               <input type="text" id="new_location" required maxlength="100" value="{{ event.LIEU_EVENEMENT }}">
               <label for="new_location">Lieu</label>
+            </div>
+          </div>
+          <div class="col s6">
+            <div class="input-field">
+              <input id="new_start" type="datetime-local" value="{{ event.DEBUT_EVENEMENT }}" required>
+              <label for="new_start" class="active">Date Début (yyyy-mm-ddThh:mm:ss)</label>
             </div>
             <div class="input-field">
               <input type="text" id="new_link" required maxlength="255" value="{{ event.LIEN_EVENEMENT }}">
               <label for="new_link">Lien Facebook</label>
-            </div>
           </div>
-          <div class="col s6">
-            <div class="col s6">
-              <div class="input-field">
-                <input type="text" class="datepicker" id="new_xtart" required value=" ">
-                <label for="new_start">Date début</label>
-              </div>
-              <div class="input-field">
-                <input type="text" class="datepicker" id="new_end" required value=" ">
-                <label for="new_end">Date fin</label>
-              </div>
-            </div>
-            <div class="col s6">
-              <div class="input-field">
-                <input type="text" class="timepicker" id="new_start_time" required value=" ">
-                <label for="new_start">Heure début</label>
-              </div>
-              <div class="input-field">
-                <input type="text" class="timepicker" id="new_end_time" required value=" ">
-                <label for="new_end">Heure fin</label>
-              </div>
-            </div>
           </div>
-          <div class="input-field col s8">
-            <input type="text" id="new_name" required maxlength="100" value="{{ event.NOM_EVENEMENT }}">
-            <label for="new_name">Nom</label>
-          </div>
-          <div class="input-field col s4" style="text-align: right;">
+          <div class="input-field col s12" style="text-align: right;">
             <button class="edit-event btn waves-effect waves-light"><i class="material-icons">check</i></button>
             <button class="delete-event btn waves-effect waves-light red"><i class="material-icons">delete</i></button>
           </div>
@@ -66,39 +50,23 @@
       <form id="create-event" class="row" style="margin-bottom: 0;">
           <div class="col s6">
             <div class="input-field">
-              <input type="text" id="new_location" required maxlength="100" value="{{ event.LIEU_EVENEMENT }}">
-              <label for="new_location">Lieu</label>
+              <input type="text" id="new_name" required maxlength="100">
+              <label for="new_name">Nom</label>
             </div>
             <div class="input-field">
-              <input type="text" id="new_link" required maxlength="255" value="{{ event.LIEN_EVENEMENT }}">
-              <label for="new_link">Lien Facebook</label>
+              <input type="text" id="new_location" required maxlength="100">
+              <label for="new_location">Lieu</label>
             </div>
           </div>
           <div class="col s6">
-            <div class="col s6">
-              <div class="input-field">
-                <input type="text" class="datepicker" id="new_xtart" required value=" ">
-                <label for="new_start">Date début</label>
-              </div>
-              <div class="input-field">
-                <input type="text" class="datepicker" id="new_end" required value=" ">
-                <label for="new_end">Date fin</label>
-              </div>
+            <div class="input-field">
+              <input id="new_start" type="datetime-local" required>
+              <label for="new_start" class="active">Date Début (yyyy-mm-ddThh:mm:ss)</label>
             </div>
-            <div class="col s6">
-              <div class="input-field">
-                <input type="text" class="timepicker" id="new_start_time" required value=" ">
-                <label for="new_start">Heure début</label>
-              </div>
-              <div class="input-field">
-                <input type="text" class="timepicker" id="new_end_time" required value=" ">
-                <label for="new_end">Heure fin</label>
-              </div>
+            <div class="input-field">
+              <input type="text" id="new_link" required maxlength="255">
+              <label for="new_link">Lien Facebook</label>
             </div>
-          </div>
-          <div class="input-field col s12">
-            <input type="text" id="new_name" required maxlength="100" value="{{ event.NOM_EVENEMENT }}">
-            <label for="new_name">Nom</label>
           </div>
         </form>
       <div class="modal-footer">
@@ -111,42 +79,23 @@
       
 <script type="text/javascript">
 $(document).ready(function() {
-	$('.datepicker').pickadate({
-		selectMonths: true, // Creates a dropdown to control month
-		selectYears: 5, // Creates a dropdown of 15 years to control year,
-		today: 'Today',
-		clear: 'Clear',
-		close: 'Ok',
-		closeOnSelect: true // Close upon selecting a date,
-	});
-	$('.timepicker').pickatime({
-		default: 'now', // Set default time: 'now', '1:30AM', '16:30'
-		fromnow: 0, // set default time to * milliseconds from now (using with default = 'now')
-		twelvehour: false, // Use AM/PM or 24-hour format
-		donetext: 'OK', // text for done-button
-		cleartext: 'Clear', // text for clear-button
-		canceltext: 'Cancel', // Text for cancel-button
-		autoclose: true, // automatic close timepicker
-		ampmclickable: true, // make AM PM clickable
-		aftershow: function(){} //Function for after opening timepicker
-	});
-	
 	$('.modal').modal();
 
 	$('.create-event').click(function(e) {
 		e.preventDefault();
 		var form = $(this).closest('.modal-content'),
 			event_name = form.find('#new_name').val(),
+			event_start = form.find('#new_start').val(),
 			event_link = form.find('#new_link').val(),
 			event_location = form.find('#new_location').val();
 		
 		var url = "/events/new",
 			data = {
 				name: event_name,
+				start: event_start,
 				link: event_link,
 				location: event_location
 			};
-
 		
 		app.POST(url, data)
 			.done(function(res) {
@@ -162,6 +111,7 @@ $(document).ready(function() {
 		var event = $(this).closest('.event'),
 			event_id = event.attr('id'),
 			event_name = event.find('#new_name').val(),
+			event_start = event.find('#new_start').val(),
 			event_link = event.find('#new_link').val(),
 			event_location = event.find('#new_location').val(),
 
@@ -169,6 +119,7 @@ $(document).ready(function() {
 		url = "/events/edit/"+event_id,
 			data = {
 				name: event_name,
+				start: event_start,
 				link: event_link,
 				location: event_location
 			};

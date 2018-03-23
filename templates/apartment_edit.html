@@ -56,7 +56,7 @@
         </div>
       </div>
       <div class="row">
-        <div class="col s6">
+        <div class="col s4">
           <div class="input-field">
             <input type="text" id="new_status" required maxlength="100" value="{{ apartment.DISPO_APPART }}">
             <label for="new_status">Disponibilité</label>
@@ -66,6 +66,12 @@
           <div class="input-field">
             <input type="text" id="new_reported" required maxlength="100" value="{{ apartment.COM_SIGNALER }}">
             <label for="new_reported">Signalé</label>
+          </div>
+        </div>
+        <div class="col s2">
+          <div style="margin-top: 1rem;">
+            <input type="checkbox" id="new_validation" {% if apartment.VALIDATION %} checked {% endif %}>
+            <label for="new_validation">Validé</label>
           </div>
         </div>
       </div>
@@ -92,6 +98,7 @@ function initGeoCoding() {
 				new_email 		= $('#new_email').val(),
 				new_status 		= $('#new_status').val(),
 				new_reported 	= $('#new_reported').val(),
+				new_validation	= $('#new_validation').prop('checked'),
 				new_lat,
 				new_lng;
 			
@@ -114,6 +121,7 @@ function initGeoCoding() {
 						email: new_email,
 						status: new_status,
 						reported: new_reported,
+						validation: new_validation,
 						lat: new_lat,
 						lng: new_lng
 					};

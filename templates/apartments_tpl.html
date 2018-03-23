@@ -6,6 +6,7 @@
   {% else %}
     <i class="material-icons circle">hotel</i>
   {% endif %}
+    {% if not apartment.VALIDATION %}<b><span class="red-text text-darken-1">[NON-VALIDÉ]</span></b> {% endif %}
     <span class="title">{{ apartment.DESCRIP_APPART }}</span>
     <p>
       <b>{{ apartment.PRIX_APPART }} €</b> <br>
